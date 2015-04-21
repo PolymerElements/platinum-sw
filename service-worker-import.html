@@ -1,0 +1,19 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  Polymer({
+    is: 'service-worker-import',
+
+    properties: {
+      href: String
+    },
+
+    getParameters: function() {
+      var params = {};
+      if (this.href) {
+        params.importscript = this.href;
+      }
+      return params;
+    }
+  });
+</script>
