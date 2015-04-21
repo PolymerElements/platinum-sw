@@ -6,6 +6,28 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
+<!--
+@group Service Worker Elements
+
+The `service-worker` element handles
+[service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
+registration, reflects the overall service worker state, and coordinates the configuration provided
+by other Service Worker Elements.
+`service-worker` is used as a parent element for children in the Service Worker Element group.
+
+    <service-worker skipwaiting
+                    clientsclaim
+                    state="{{state}}"
+                    on-service-worker-error="handleSWError"
+                    on-service-worker-updated="handleSWUpdated"
+                    on-service-worker-installed="handleSWInstalled">
+      <!-- one or more <service-worker-*> children which share the service worker registration. -->
+</service-worker>
+
+@element service-worker
+@status preview
+@homepage github.io
+-->
 
 <link rel="import" href="../polymer/polymer.html">
 
@@ -16,7 +38,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
       is: 'service-worker',
+
+      // Used as an "emergency" switch if we make breaking changes in the way <service-worker> talks
+      // to service-worker.js. Otherwise, it shouldn't need to change, and isn't meant to be kept
+      // in sync with the element's release number.
       _version: '1.0',
+
+      /**
+       * Fired when the initial service worker installation completes successfully.
+       * The service worker will normally only be installed once, the first time a page with a
+       * `<service-worker>` element is visited in a given browser. If the same page is visited
+       * again, the existing service worker will be reused, and there won't be another
+       * `service-worker-installed` fired.
+       *
+       * @event service-worker-installed
+       */
+
+      /**
+       * Fired when the service worker update flow completes successfully.
+       * If you make changes to your `<service-worker>` configuration (i.e. by adding in new
+       * `<service-worker-*>` child elements, or changing their attributes), users who had the old
+       * service worker installed will get the update installed when they see the modified elements.
+       *
+       * @event service-worker-updated
+       */
+
+      /**
+       * Fired when an error prevents the service worker installation from completing.
+       *
+       * @event service-worker-error
+       */
 
       properties: {
         clientsclaim: {
