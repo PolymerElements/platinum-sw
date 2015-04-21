@@ -52,6 +52,7 @@ by other Service Worker Elements.
        * `service-worker-installed` fired.
        *
        * @event service-worker-installed
+       * @detail {String} A message indicating that the installation succeeded.
        */
 
       /**
@@ -61,31 +62,90 @@ by other Service Worker Elements.
        * service worker installed will get the update installed when they see the modified elements.
        *
        * @event service-worker-updated
+       * @detail {String} A message indicating that the update succeeded.
        */
 
       /**
        * Fired when an error prevents the service worker installation from completing.
        *
        * @event service-worker-error
+       * @detail {String} An error messaging indicating what went wrong.
        */
 
       properties: {
+        /**
+         * Whether the activated service worker should take immediate control of any pages under
+         * its scope.
+         * If this is `false`, the service worker won't have any effect until the next time the page
+         * is visited/reloaded.
+         * If this is `true`, it will take control and start handling events for the current page
+         * (and any pages under the same scope open in other tabs/windows) as soon it's active.
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#clients-claim-method}
+         */
         clientsclaim: {
           type: Boolean,
           value: false
         },
+
+        /**
+         * The service worker script that is registered. The script *should* be located at the top
+         * level of your site, to ensure that it is able to control all the pages on your site.
+         *
+         * It's *strongly* recommended that you create a top-level file named `service-worker.js`
+         * containing only:
+         *
+         * `importScripts('bower_components/service-worker/service-worker.js');`
+         *
+         * (adjust to match the path where your `service-worker` element directory can be found).
+         *
+         * This will ensure that your service worker script contains everything needed to play
+         * nicely with the Service Worker Elements group.
+         *
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#navigator-service-worker-register}
+         */
         href: {
           type: String,
           value: 'service-worker.js'
         },
+
+        /**
+         * The scope of the service worker, relative to the registered service worker script.
+         * All pages that fall under this scope will be controlled by the registered service worker.
+         *
+         * Normally, this would not need to be changed, unless you want the service worker to only
+         * apply to a subset of your site.
+         *
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#navigator-service-worker-register}
+         */
         scope: {
           type: String,
           value: './'
         },
+
+        /**
+         * Whether an updated service worker should bypass the `waiting` state and immediately
+         * become `active`. Normally, during an update, the new service worker stays in the
+         * `waiting` state until the current page and any other tabs/windows that are using the old
+         * service worker are unloaded.
+         * If this is `false`, an updated service worker won't be activated until all instances of
+         * the old server worker have been unloaded.
+         * If this is `true`, an updated service worker will become `active` immediately.
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope-skipwaiting}
+         */
         skipwaiting: {
           type: Boolean,
           value: false
         },
+
+        /**
+         * The current state of the service worker registered by this element.
+         *
+         * One of:
+         * - 'installed'
+         * - 'updated'
+         * - 'error'
+         * - 'unsupported'
+         */
         state: {
           notify: true,
           type: String
@@ -121,15 +181,17 @@ by other Service Worker Elements.
             }.bind(this);
           }.bind(this);
         }.bind(this)).catch(function(error) {
-          this.state = 'error';
           this.fire('service-worker-error', error.toString());
           if (error.name === 'NetworkError') {
+            this.state = 'unsupported';
             var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
             console.error('A valid service worker script was not found at ' + location + '\n' +
             'Please ensure that you have copied the ' +
             'bower_components/service-worker/service-worker.js file to the ' +
             'appropriate location on your web server.');
             // TODO: Add a link to some docs explaining this error further.
+          } else {
+            this.state = 'error';
           }
         }.bind(this));
       },
