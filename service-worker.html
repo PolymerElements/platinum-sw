@@ -171,27 +171,25 @@ by other Service Worker Elements.
                     this.state = 'installed';
                     this.fire('service-worker-installed', 'A new service worker was installed.');
                   }
-                  break;
+                break;
 
                 case 'redundant':
                   this.state = 'error';
                   this.fire('service-worker-error', 'The installing service worker became redundant.');
-                  break;
+                break;
               }
             }.bind(this);
           }.bind(this);
         }.bind(this)).catch(function(error) {
+          this.state = 'error';
           this.fire('service-worker-error', error.toString());
           if (error.name === 'NetworkError') {
-            this.state = 'unsupported';
             var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
             console.error('A valid service worker script was not found at ' + location + '\n' +
             'Please ensure that you have copied the ' +
             'bower_components/service-worker/service-worker.js file to the ' +
             'appropriate location on your web server.');
             // TODO: Add a link to some docs explaining this error further.
-          } else {
-            this.state = 'error';
           }
         }.bind(this));
       },
@@ -246,7 +244,7 @@ by other Service Worker Elements.
             this._registerServiceWorker(serviceWorkerUrl);
           });
         } else {
-          this.state = 'error';
+          this.state = 'unsupported';
           this.fire('service-worker-error', 'Service workers are not available in the current browser.');
         }
       }
