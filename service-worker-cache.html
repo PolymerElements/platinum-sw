@@ -1,0 +1,26 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  Polymer({
+    is: 'service-worker-cache',
+
+    properties: {
+      defaultcachestrategy: {
+        type: String,
+        value: 'networkFirst'
+      },
+      precache: {
+        type: Array,
+        value: function() { return []; }
+      }
+    },
+
+    getParameters: function(baseURI) {
+      return {
+        importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
+        defaultcachestrategy: this.defaultcachestrategy,
+        precache: this.precache
+      };
+    }
+  });
+</script>

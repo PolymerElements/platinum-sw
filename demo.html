@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>&lt;service-worker&gt; Demo</title>
+    <script src="../webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="service-worker.html">
+    <link rel="import" href="service-worker-import.html">
+    <link rel="import" href="service-worker-cache.html">
+    <link rel="import" href="service-worker-fetch.html">
+  </head>
+
+  <body>
+    <template is="x-autobind" id="page-template">
+      <service-worker skipwaiting
+                      clientsclaim
+                      state="{{state}}"
+                      on-service-worker-error="updateStatus"
+                      on-service-worker-updated="updateStatus"
+                      on-service-worker-installed="updateStatus">
+        <service-worker-import href="helper/jsonFetch.js"></service-worker-import>
+        <service-worker-cache defaultcachestrategy="networkFirst"
+                              precache='["README.md"]'>
+        </service-worker-cache>
+        <service-worker-fetch path="/(.+)\.json"
+                              handler="jsonFetch">
+        </service-worker-fetch>
+        <service-worker-fetch path="/(.+)"
+                              handler="cacheFirst"
+                              origin="/https:\/\/fonts.+/">
+        </service-worker-fetch>
+      </service-worker>
+
+      <p>Message: <span>{{message}}</span></p>
+      <p>State: <span>{{state}}</span></p>
+    </template>
+
+    <script>
+      var t = document.querySelector('#page-template');
+      t.updateStatus = function(e) {
+        t.message = e.detail;
+      };
+    </script>
+  </body>
+</html>

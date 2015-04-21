@@ -1,0 +1,23 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  Polymer({
+    is: 'service-worker-fetch',
+
+    properties: {
+      handler: String,
+      origin: String,
+      path: String
+    },
+
+    getParameters: function(baseURI) {
+      var params = {
+        importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href
+      };
+      if (this.path && this.handler) {
+        params.route = [this.path, this.handler, this.origin];
+      }
+      return params;
+    }
+  });
+</script>

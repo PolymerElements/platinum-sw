@@ -1,0 +1,133 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script>
+  (function() {
+    // Grab the URI of this file to use as a base when resolving relative paths.
+    var baseURI = document.currentScript.baseURI;
+
+    Polymer({
+      is: 'service-worker',
+      _version: '1.0',
+
+      properties: {
+        clientsclaim: {
+          type: Boolean,
+          value: false
+        },
+        href: {
+          type: String,
+          value: 'service-worker.js'
+        },
+        scope: {
+          type: String,
+          value: './'
+        },
+        skipwaiting: {
+          type: Boolean,
+          value: false
+        },
+        state: {
+          notify: true,
+          type: String
+        }
+      },
+
+      _registerServiceWorker: function(serviceWorkerUrl) {
+        navigator.serviceWorker.register(serviceWorkerUrl, {scope: this.scope}).then(function(registration) {
+          if (registration.active) {
+            this.state = 'installed';
+          }
+
+          registration.onupdatefound = function() {
+            var installingWorker = registration.installing;
+            installingWorker.onstatechange = function() {
+              switch (installingWorker.state) {
+                case 'installed':
+                  if (navigator.serviceWorker.controller) {
+                    this.state = 'updated';
+                    this.fire('service-worker-updated',
+                      'A new service worker was installed, replacing the old service worker.');
+                  } else {
+                    this.state = 'installed';
+                    this.fire('service-worker-installed', 'A new service worker was installed.');
+                  }
+                  break;
+
+                case 'redundant':
+                  this.state = 'error';
+                  this.fire('service-worker-error', 'The installing service worker became redundant.');
+                  break;
+              }
+            }.bind(this);
+          }.bind(this);
+        }.bind(this)).catch(function(error) {
+          this.state = 'error';
+          this.fire('service-worker-error', error.toString());
+          if (error.name === 'NetworkError') {
+            var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
+            console.error('A valid service worker script was not found at ' + location + '\n' +
+            'Please ensure that you have copied the ' +
+            'bower_components/service-worker/service-worker.js file to the ' +
+            'appropriate location on your web server.');
+            // TODO: Add a link to some docs explaining this error further.
+          }
+        }.bind(this));
+      },
+
+      _serializeUrlParams: function(params) {
+        return Object.keys(params).sort().map(function(key) {
+          // encodeURIComponent(['a', 'b']) => 'a%2Cb',
+          // so this will still work when the values are Arrays.
+          // TODO: It won't work if the values in the Arrays have ',' characters in them.
+          return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+        }).join('&');
+      },
+
+      _unique: function(arr) {
+        return arr.filter(function(item, index) {
+          return arr.indexOf(item) === index;
+        });
+      },
+
+      ready: function() {
+        if ('serviceWorker' in navigator) {
+          this.async(function() {
+            var params = {
+              baseURI: baseURI,
+              version: this._version
+            };
+
+            var children = Polymer.dom(this).childNodes;
+            for (var i = 0; i < children.length; i++) {
+              if (typeof children[i].getParameters === 'function') {
+                var childParams = children[i].getParameters(baseURI);
+                Object.keys(childParams).forEach(function(key) {
+                  if (Array.isArray(params[key])) {
+                    params[key].push(childParams[key]);
+                  } else {
+                    params[key] = [childParams[key]];
+                  }
+                });
+              }
+            }
+            params.importscript = this._unique(params.importscript || []);
+            params.clientsclaim = this.clientsclaim;
+            params.skipwaiting = this.skipwaiting;
+
+            var serviceWorkerUrl = new URL(this.href, window.location);
+            // It's very important to ensure that the serialization is stable.
+            // Serializing the same settings should always produce the same URL.
+            // Serializing different settings should always produce a different URL.
+            // This ensures that the service worker upgrade flow is triggered when settings change.
+            serviceWorkerUrl.search = this._serializeUrlParams(params);
+
+            this._registerServiceWorker(serviceWorkerUrl);
+          });
+        } else {
+          this.state = 'error';
+          this.fire('service-worker-error', 'Service workers are not available in the current browser.');
+        }
+      }
+    });
+  })();
+</script>

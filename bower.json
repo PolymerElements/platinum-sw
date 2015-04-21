@@ -1,0 +1,8 @@
+{
+  "name": "service-worker",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.8.0-rc.6",
+    "sw-toolbox": "^2.0.0"
+  }
+}
