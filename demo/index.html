@@ -4,11 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>&lt;service-worker&gt; Demo</title>
-    <script src="../webcomponentsjs/webcomponents.min.js"></script>
-    <link rel="import" href="service-worker.html">
-    <link rel="import" href="service-worker-import.html">
-    <link rel="import" href="service-worker-cache.html">
-    <link rel="import" href="service-worker-fetch.html">
+    <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+    <link rel="import" href="../service-worker-elements.html">
   </head>
 
   <body>
@@ -21,7 +18,7 @@
                       on-service-worker-installed="updateStatus">
         <service-worker-import href="helper/jsonFetch.js"></service-worker-import>
         <service-worker-cache defaultcachestrategy="networkFirst"
-                              precache='["README.md"]'>
+                              precache='["file.txt"]'>
         </service-worker-cache>
         <service-worker-fetch path="/(.+)\.json"
                               handler="jsonFetch">
