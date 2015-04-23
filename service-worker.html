@@ -109,6 +109,25 @@ by other Service Worker Elements.
         },
 
         /**
+         * Whether the page should be automatically reloaded (via `window.location.reload()`) when
+         * the service worker is successfully installed.
+         * While it's perfectly valid to continue using a page with a freshly installed service
+         * worker, it's a common pattern to want to reload it immediately following the install.
+         * This ensure that, for example, if you're using a `<service-worker-cache>` with an on the
+         * fly caching strategy, it will get a chance to intercept all the requests needed to render
+         * your page and store them in the cache.
+         * If you don't immediately reload your page, then any resources that were loaded before the
+         * service worker was installed (e.g. this `service-worker.html` file) won't be present
+         * in the cache until the next time the page is loaded.
+         * Note that this reload will only happen when a service worker is installed for the first
+         * time. If the service worker is subsequently updated, it won't trigger another reload.
+         */
+        reloadOnInstall: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * The scope of the service worker, relative to the registered service worker script.
          * All pages that fall under this scope will be controlled by the registered service worker.
          *
@@ -168,8 +187,12 @@ by other Service Worker Elements.
                     this.fire('service-worker-updated',
                       'A new service worker was installed, replacing the old service worker.');
                   } else {
-                    this.state = 'installed';
-                    this.fire('service-worker-installed', 'A new service worker was installed.');
+                    if (this.reloadOnInstall) {
+                      window.location.reload();
+                    } else {
+                      this.state = 'installed';
+                      this.fire('service-worker-installed', 'A new service worker was installed.');
+                    }
                   }
                 break;
 
@@ -242,7 +265,10 @@ by other Service Worker Elements.
             serviceWorkerUrl.search = this._serializeUrlParams(params);
 
             this._registerServiceWorker(serviceWorkerUrl);
-          }, 20);
+          }, 20); // HACK - Attributes in the children element that are populated via x-autobind
+                  // template substitution apparently need some time to stamp out. Try to figure
+                  // out if there's a better way of consuming parameters from children elements
+                  // in general, via some sort of lifecycle event.
         } else {
           this.state = 'unsupported';
           this.fire('service-worker-error', 'Service workers are not available in the current browser.');
