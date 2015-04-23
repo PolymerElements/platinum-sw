@@ -11,8 +11,8 @@
 var swToolboxURL = new URL('../sw-toolbox/sw-toolbox.js', params.get('baseURI')).href;
 importScripts(swToolboxURL);
 
-if (params.has('defaultcachestrategy')) {
-  toolbox.router.default = toolbox[params.get('defaultcachestrategy')];
+if (params.has('defaultCacheStrategy')) {
+  toolbox.router.default = toolbox[params.get('defaultCacheStrategy')];
 }
 
 if (params.has('precache')) {

@@ -20,10 +20,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <template is="x-autobind" id="page-template" on-service-worker-installed="reloadPage">
-      <service-worker skipwaiting clientsclaim>
-        <service-worker-cache defaultcachestrategy="networkFirst" precache="{{precacheList}}">
-        </service-worker-cache>
+    <template is="x-autobind" id="page-template">
+      <service-worker skip-waiting clients-claim reload-on-install>
+        <service-worker-cache default-cache-strategy="networkFirst"
+                              precache="{{precacheList}}"></service-worker-cache>
       </service-worker>
 
       <h1>Simple Offline eBook Demo</h1>
@@ -65,12 +65,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }).then(function(text) {
           t.text = text;
         });
-      };
-
-      t.reloadPage = function() {
-        // Reload the page immediately after the service worker has installed, so that all the
-        // network requests will have a chance to get cached.
-        window.location.reload();
       };
     </script>
   </body>
