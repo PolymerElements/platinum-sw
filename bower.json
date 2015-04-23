@@ -2,7 +2,12 @@
   "name": "service-worker",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.8.0-rc.6",
+    "polymer": "Polymer/polymer#^0.8.0-rc.7",
     "sw-toolbox": "^2.0.0"
+  },
+  "devDependencies": {
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.8.0",
+    "marked-element": "PolymerElements/marked-element#^0.8.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.6.0"
   }
 }

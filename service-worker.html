@@ -131,7 +131,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             serviceWorkerUrl.search = this._serializeUrlParams(params);
 
             this._registerServiceWorker(serviceWorkerUrl);
-          });
+          }, 20);
         } else {
           this.state = 'error';
           this.fire('service-worker-error', 'Service workers are not available in the current browser.');
