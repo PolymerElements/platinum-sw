@@ -24,7 +24,7 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#v0.8.0-rc.6",
+    "polymer": "Polymer/polymer#^0.8.0-rc.7",
     "sw-toolbox": "^2.0.0"
   },
   "devDependencies": {

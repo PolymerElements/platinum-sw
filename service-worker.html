@@ -82,7 +82,7 @@ by other Service Worker Elements.
          * (and any pages under the same scope open in other tabs/windows) as soon it's active.
          * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#clients-claim-method}
          */
-        clientsclaim: {
+        clientsClaim: {
           type: Boolean,
           value: false
         },
@@ -132,7 +132,7 @@ by other Service Worker Elements.
          * If this is `true`, an updated service worker will become `active` immediately.
          * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope-skipwaiting}
          */
-        skipwaiting: {
+        skipWaiting: {
           type: Boolean,
           value: false
         },
@@ -231,8 +231,8 @@ by other Service Worker Elements.
               }
             }
             params.importscript = this._unique(params.importscript || []);
-            params.clientsclaim = this.clientsclaim;
-            params.skipwaiting = this.skipwaiting;
+            params.clientsClaim = this.clientsClaim;
+            params.skipWaiting = this.skipWaiting;
 
             var serviceWorkerUrl = new URL(this.href, window.location);
             // It's very important to ensure that the serialization is stable.

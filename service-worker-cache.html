@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'service-worker-cache',
 
     properties: {
-      defaultcachestrategy: {
+      defaultCacheStrategy: {
         type: String,
         value: 'networkFirst'
       },
@@ -27,7 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     getParameters: function(baseURI) {
       return {
         importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
-        defaultcachestrategy: this.defaultcachestrategy,
+        defaultCacheStrategy: this.defaultCacheStrategy,
         precache: this.precache
       };
     }

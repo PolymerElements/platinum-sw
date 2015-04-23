@@ -18,14 +18,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <body>
     <template is="x-autobind" id="page-template">
-      <service-worker skipwaiting
-                      clientsclaim
+      <service-worker skip-waiting
+                      clients-claim
                       state="{{state}}"
                       on-service-worker-error="updateStatus"
                       on-service-worker-updated="updateStatus"
                       on-service-worker-installed="updateStatus">
         <service-worker-import href="helper/jsonFetch.js"></service-worker-import>
-        <service-worker-cache defaultcachestrategy="networkFirst"
+        <service-worker-cache default-cache-strategy="networkFirst"
                               precache='["file.txt"]'>
         </service-worker-cache>
         <service-worker-fetch path="/(.+)\.json"
