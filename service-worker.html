@@ -148,6 +148,7 @@ by other Service Worker Elements.
          */
         state: {
           notify: true,
+          readOnly: true,
           type: String
         }
       },
@@ -155,7 +156,7 @@ by other Service Worker Elements.
       _registerServiceWorker: function(serviceWorkerUrl) {
         navigator.serviceWorker.register(serviceWorkerUrl, {scope: this.scope}).then(function(registration) {
           if (registration.active) {
-            this.state = 'installed';
+            this._setState('installed');
           }
 
           registration.onupdatefound = function() {
@@ -164,24 +165,24 @@ by other Service Worker Elements.
               switch (installingWorker.state) {
                 case 'installed':
                   if (navigator.serviceWorker.controller) {
-                    this.state = 'updated';
+                    this._setState('updated');
                     this.fire('service-worker-updated',
                       'A new service worker was installed, replacing the old service worker.');
                   } else {
-                    this.state = 'installed';
+                    this._setState('installed');
                     this.fire('service-worker-installed', 'A new service worker was installed.');
                   }
                 break;
 
                 case 'redundant':
-                  this.state = 'error';
+                  this._setState('error');
                   this.fire('service-worker-error', 'The installing service worker became redundant.');
                 break;
               }
             }.bind(this);
           }.bind(this);
         }.bind(this)).catch(function(error) {
-          this.state = 'error';
+          this._setState('error');
           this.fire('service-worker-error', error.toString());
           if (error.name === 'NetworkError') {
             var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
@@ -244,7 +245,7 @@ by other Service Worker Elements.
             this._registerServiceWorker(serviceWorkerUrl);
           });
         } else {
-          this.state = 'unsupported';
+          this._setState('unsupported');
           this.fire('service-worker-error', 'Service workers are not available in the current browser.');
         }
       }
