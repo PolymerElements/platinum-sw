@@ -6,6 +6,28 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
+<!--
+@group Service Worker Elements
+
+The `service-worker` element handles
+[service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
+registration, reflects the overall service worker state, and coordinates the configuration provided
+by other Service Worker Elements.
+`service-worker` is used as a parent element for children in the Service Worker Element group.
+
+    <service-worker skipwaiting
+                    clientsclaim
+                    state="{{state}}"
+                    on-service-worker-error="handleSWError"
+                    on-service-worker-updated="handleSWUpdated"
+                    on-service-worker-installed="handleSWInstalled">
+      ...one or more <service-worker-*> children which share the service worker registration...
+    </service-worker>
+
+@element service-worker
+@status preview
+@homepage github.io
+-->
 
 <link rel="import" href="../polymer/polymer.html">
 
@@ -16,25 +38,114 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     Polymer({
       is: 'service-worker',
+
+      // Used as an "emergency" switch if we make breaking changes in the way <service-worker> talks
+      // to service-worker.js. Otherwise, it shouldn't need to change, and isn't meant to be kept
+      // in sync with the element's release number.
       _version: '1.0',
 
+      /**
+       * Fired when the initial service worker installation completes successfully.
+       * The service worker will normally only be installed once, the first time a page with a
+       * `<service-worker>` element is visited in a given browser. If the same page is visited
+       * again, the existing service worker will be reused, and there won't be another
+       * `service-worker-installed` fired.
+       *
+       * @event service-worker-installed
+       * @detail {String} A message indicating that the installation succeeded.
+       */
+
+      /**
+       * Fired when the service worker update flow completes successfully.
+       * If you make changes to your `<service-worker>` configuration (i.e. by adding in new
+       * `<service-worker-*>` child elements, or changing their attributes), users who had the old
+       * service worker installed will get the update installed when they see the modified elements.
+       *
+       * @event service-worker-updated
+       * @detail {String} A message indicating that the update succeeded.
+       */
+
+      /**
+       * Fired when an error prevents the service worker installation from completing.
+       *
+       * @event service-worker-error
+       * @detail {String} An error messaging indicating what went wrong.
+       */
+
       properties: {
+        /**
+         * Whether the activated service worker should take immediate control of any pages under
+         * its scope.
+         * If this is `false`, the service worker won't have any effect until the next time the page
+         * is visited/reloaded.
+         * If this is `true`, it will take control and start handling events for the current page
+         * (and any pages under the same scope open in other tabs/windows) as soon it's active.
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#clients-claim-method}
+         */
         clientsClaim: {
           type: Boolean,
           value: false
         },
+
+        /**
+         * The service worker script that is registered. The script *should* be located at the top
+         * level of your site, to ensure that it is able to control all the pages on your site.
+         *
+         * It's *strongly* recommended that you create a top-level file named `service-worker.js`
+         * containing only:
+         *
+         * `importScripts('bower_components/service-worker/service-worker.js');`
+         *
+         * (adjust to match the path where your `service-worker` element directory can be found).
+         *
+         * This will ensure that your service worker script contains everything needed to play
+         * nicely with the Service Worker Elements group.
+         *
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#navigator-service-worker-register}
+         */
         href: {
           type: String,
           value: 'service-worker.js'
         },
+
+        /**
+         * The scope of the service worker, relative to the registered service worker script.
+         * All pages that fall under this scope will be controlled by the registered service worker.
+         *
+         * Normally, this would not need to be changed, unless you want the service worker to only
+         * apply to a subset of your site.
+         *
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#navigator-service-worker-register}
+         */
         scope: {
           type: String,
           value: './'
         },
+
+        /**
+         * Whether an updated service worker should bypass the `waiting` state and immediately
+         * become `active`. Normally, during an update, the new service worker stays in the
+         * `waiting` state until the current page and any other tabs/windows that are using the old
+         * service worker are unloaded.
+         * If this is `false`, an updated service worker won't be activated until all instances of
+         * the old server worker have been unloaded.
+         * If this is `true`, an updated service worker will become `active` immediately.
+         * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope-skipwaiting}
+         */
         skipWaiting: {
           type: Boolean,
           value: false
         },
+
+        /**
+         * The current state of the service worker registered by this element.
+         *
+         * One of:
+         * - 'installed'
+         * - 'updated'
+         * - 'error'
+         * - 'unsupported'
+         */
         state: {
           notify: true,
           type: String
@@ -60,12 +171,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     this.state = 'installed';
                     this.fire('service-worker-installed', 'A new service worker was installed.');
                   }
-                  break;
+                break;
 
                 case 'redundant':
                   this.state = 'error';
                   this.fire('service-worker-error', 'The installing service worker became redundant.');
-                  break;
+                break;
               }
             }.bind(this);
           }.bind(this);
@@ -133,7 +244,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             this._registerServiceWorker(serviceWorkerUrl);
           });
         } else {
-          this.state = 'error';
+          this.state = 'unsupported';
           this.fire('service-worker-error', 'Service workers are not available in the current browser.');
         }
       }
