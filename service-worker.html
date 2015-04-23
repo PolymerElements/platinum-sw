@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _version: '1.0',
 
       properties: {
-        clientsclaim: {
+        clientsClaim: {
           type: Boolean,
           value: false
         },
@@ -31,7 +31,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           value: './'
         },
-        skipwaiting: {
+        skipWaiting: {
           type: Boolean,
           value: false
         },
@@ -120,8 +120,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }
             params.importscript = this._unique(params.importscript || []);
-            params.clientsclaim = this.clientsclaim;
-            params.skipwaiting = this.skipwaiting;
+            params.clientsClaim = this.clientsClaim;
+            params.skipWaiting = this.skipWaiting;
 
             var serviceWorkerUrl = new URL(this.href, window.location);
             // It's very important to ensure that the serialization is stable.

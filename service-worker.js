@@ -39,13 +39,13 @@ if (params.has('importscript')) {
   }
 }
 
-if (params.get('skipwaiting') === 'true' && self.skipWaiting) {
+if (params.get('skipWaiting') === 'true' && self.skipWaiting) {
   self.addEventListener('install', function(e) {
     e.waitUntil(self.skipWaiting());
   });
 }
 
-if (params.get('clientsclaim') === 'true' && self.clients && self.clients.claim) {
+if (params.get('clientsClaim') === 'true' && self.clients && self.clients.claim) {
   self.addEventListener('activate', function(e) {
     e.waitUntil(self.clients.claim());
   });
