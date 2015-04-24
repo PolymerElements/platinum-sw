@@ -29,8 +29,7 @@
   },
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.8.0",
-    "test-fixture": "PolymerElements/test-fixture#^0.8.0",
-    "web-component-tester": "Polymer/web-component-tester#^2.2.3",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#~0.6.1"
+    "marked-element": "PolymerElements/marked-element#^0.8.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.6.1"
   }
 }
