@@ -254,7 +254,11 @@ by other Service Worker Elements.
                 });
               }
             }
-            params.importscript = this._unique(params.importscript || []);
+
+            if (params.importscript) {
+              params.importscript = this._unique(params.importscript);
+            }
+
             params.clientsClaim = this.clientsClaim;
             params.skipWaiting = this.skipWaiting;
 

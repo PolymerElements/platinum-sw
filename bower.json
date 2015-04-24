@@ -30,6 +30,6 @@
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.8.0",
     "marked-element": "PolymerElements/marked-element#^0.8.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.6.1"
+    "web-component-tester": "~2.2.6"
   }
 }
