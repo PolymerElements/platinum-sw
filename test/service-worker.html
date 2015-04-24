@@ -35,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
 
           test('state is set to "installed"', function() {
-            assert(sw.state === 'installed', sw.state);
+            assert.equal(sw.state, 'installed');
           });
         });
       }
@@ -43,7 +43,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       function serviceWorkerUnsupportedSuite() {
         suite('Service Workers Unsupported', function() {
           test('state is set to "unsupported"', function() {
-            assert(sw.state === 'unsupported', sw.state);
+            assert.equal(sw.state, 'unsupported');
           });
         });
       }
