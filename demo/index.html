@@ -13,14 +13,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>&lt;service-worker&gt; Demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../service-worker-elements.html">
     <link rel="import" href="../../marked-element/marked-element.html">
   </head>
 
   <body>
     <template is="x-autobind" id="page-template">
-      <service-worker skip-waiting clients-claim reload-on-install>
+      <service-worker skip-waiting
+                      clients-claim
+                      reload-on-install
+                      state="{{state}}">
         <service-worker-cache default-cache-strategy="networkFirst"
                               precache="{{precacheList}}"></service-worker-cache>
       </service-worker>
@@ -34,10 +37,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </p>
       <p>
         Service workers are meant to be a progressive enhancement, and browsers that lack service
-        worker support will still have a functionality (online-only) eBook reader.
+        worker support will still have a functional (online-only) eBook reader.
       </p>
 
-      <select id="selectBook" on-change="selectBook">
+      <select id="selectBook" on-change="selectBook" disabled$="{{isSelectBookDisabled(state)}}">
         <option disabled selected>Select a Book...</option>
         <template is="x-repeat" id="books" items="{{books}}">
           <option>{{item.title}}</option>
@@ -51,17 +54,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var t = document.querySelector('#page-template');
 
       t.books = [{
-        title: 'Dubliners',
-        url: 'https://cdn.rawgit.com/GITenberg/Dubliners_2814/master/2814.txt'
-      }, {
         title: 'Don Quixote',
         url: 'https://cdn.rawgit.com/GITenberg/Don-Quixote_996/master/996.txt'
       }, {
+        title: 'Dubliners',
+        url: 'https://cdn.rawgit.com/GITenberg/Dubliners_2814/master/2814.txt'
+      }, {
         title: 'Pride & Prejudice',
         url: 'https://cdn.rawgit.com/GITenberg/Pride-and-Prejudice_1342/master/1342.txt'
-      }].sort(function(a, b) {
-        return a.title > b.title;
-      });
+      }];
 
       t.precacheList = t.books.map(function(book) {
         return book.url;
@@ -74,6 +75,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }).then(function(text) {
           t.text = text;
         });
+      };
+
+      // Disable book selection until the service worker state is known. This works around someone
+      // selecting a book then having the page reload due to a new service worker installation.
+      t.isSelectBookDisabled = function(state) {
+        return !state;
       };
     </script>
   </body>
