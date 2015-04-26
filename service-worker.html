@@ -15,8 +15,8 @@ registration, reflects the overall service worker state, and coordinates the con
 by other Service Worker Elements.
 `service-worker` is used as a parent element for children in the Service Worker Element group.
 
-    <service-worker skipwaiting
-                    clientsclaim
+    <service-worker skip-waiting
+                    clients-claim
                     state="{{state}}"
                     on-service-worker-error="handleSWError"
                     on-service-worker-updated="handleSWUpdated"
@@ -74,8 +74,9 @@ by other Service Worker Elements.
 
       properties: {
         /**
-         * Whether the activated service worker should take immediate control of any pages under
-         * its scope.
+         * Whether the activated service worker should [take immediate control](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#clients-claim-method)
+         * of any pages under its scope.
+         *
          * If this is `false`, the service worker won't have any effect until the next time the page
          * is visited/reloaded.
          * If this is `true`, it will take control and start handling events for the current page
@@ -88,8 +89,9 @@ by other Service Worker Elements.
         },
 
         /**
-         * The service worker script that is registered. The script *should* be located at the top
-         * level of your site, to ensure that it is able to control all the pages on your site.
+         * The service worker script that is [registered](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#navigator-service-worker-register).
+         * The script *should* be located at the top level of your site, to ensure that it is able
+         * to control all the pages on your site.
          *
          * It's *strongly* recommended that you create a top-level file named `service-worker.js`
          * containing only:
@@ -111,14 +113,17 @@ by other Service Worker Elements.
         /**
          * Whether the page should be automatically reloaded (via `window.location.reload()`) when
          * the service worker is successfully installed.
+         *
          * While it's perfectly valid to continue using a page with a freshly installed service
          * worker, it's a common pattern to want to reload it immediately following the install.
          * This ensures that, for example, if you're using a `<service-worker-cache>` with an on the
          * fly caching strategy, it will get a chance to intercept all the requests needed to render
          * your page and store them in the cache.
+         *
          * If you don't immediately reload your page, then any resources that were loaded before the
          * service worker was installed (e.g. this `service-worker.html` file) won't be present
          * in the cache until the next time the page is loaded.
+         *
          * Note that this reload will only happen when a service worker is installed for the first
          * time. If the service worker is subsequently updated, it won't trigger another reload.
          */
@@ -142,12 +147,16 @@ by other Service Worker Elements.
         },
 
         /**
-         * Whether an updated service worker should bypass the `waiting` state and immediately
-         * become `active`. Normally, during an update, the new service worker stays in the
+         * Whether an updated service worker should [bypass the `waiting` state](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope-skipwaiting)
+         * and immediately become `active`.
+         *
+         * Normally, during an update, the new service worker stays in the
          * `waiting` state until the current page and any other tabs/windows that are using the old
          * service worker are unloaded.
+         *
          * If this is `false`, an updated service worker won't be activated until all instances of
          * the old server worker have been unloaded.
+         *
          * If this is `true`, an updated service worker will become `active` immediately.
          * @see {@link https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope-skipwaiting}
          */
