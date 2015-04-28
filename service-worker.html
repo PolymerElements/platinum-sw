@@ -24,6 +24,9 @@ by other Service Worker Elements.
       ...one or more <service-worker-*> children which share the service worker registration...
     </service-worker>
 
+Please see https://github.com/PolymerElements/service-worker#top-level-sw-importjs for a *crucial*
+prerequite file you must create before `<service-worker>` can be used!
+
 @element service-worker
 @status preview
 @homepage github.io
@@ -93,7 +96,7 @@ by other Service Worker Elements.
          * The script *should* be located at the top level of your site, to ensure that it is able
          * to control all the pages on your site.
          *
-         * It's *strongly* recommended that you create a top-level file named `service-worker.js`
+         * It's *strongly* recommended that you create a top-level file named `sw-import.js`
          * containing only:
          *
          * `importScripts('bower_components/service-worker/service-worker.js');`
@@ -219,10 +222,8 @@ by other Service Worker Elements.
           if (error.name === 'NetworkError') {
             var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
             console.error('A valid service worker script was not found at ' + location + '\n' +
-            'Please ensure that you have copied the ' +
-            'bower_components/service-worker/service-worker.js file to the ' +
-            'appropriate location on your web server.');
-            // TODO: Add a link to some docs explaining this error further.
+            'To learn how to fix this, please see\n' +
+            'https://github.com/PolymerElements/service-worker#top-level-sw-importjs');
           }
         }.bind(this));
       },

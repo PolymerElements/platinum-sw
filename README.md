@@ -5,7 +5,7 @@ Full documentation is available at https://PolymerElements.github.com/service-wo
 
 # Considerations
 
-## Top-level `service-worker.js`
+## Top-level `sw-import.js`
 While `<service-worker>` abstracts away many of the details of working with service workers, there
 is one specific requirement that developers must fulfill: it needs to register a JavaScript file
 located at the top-level of your site's web root. (Details behind this requirement can be found in
