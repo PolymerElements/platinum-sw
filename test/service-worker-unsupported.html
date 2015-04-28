@@ -20,39 +20,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <service-worker skip-waiting clients-claim></service-worker>
+    <service-worker></service-worker>
 
     <script>
       var sw = document.querySelector('service-worker');
 
-      function serviceWorkerSupportedSuite() {
-        suite('Service Workers Supported', function() {
-          test('creates an active service worker that controls the page', function() {
-            return navigator.serviceWorker.ready.then(function(registration) {
-              assert.ok(registration);
-              assert.ok(navigator.serviceWorker.controller);
-            });
-          });
-
-          test('state is set to "installed"', function() {
-            assert.equal(sw.state, 'installed');
-          });
+      suite('Unsupported', function() {
+        test('state is set to "unsupported"', function() {
+          assert.equal(sw.state, 'unsupported');
         });
-      }
-
-      function serviceWorkerUnsupportedSuite() {
-        suite('Service Workers Unsupported', function() {
-          test('state is set to "unsupported"', function() {
-            assert.equal(sw.state, 'unsupported');
-          });
-        });
-      }
-
-      if (navigator.serviceWorker) {
-        serviceWorkerSupportedSuite();
-      } else {
-        serviceWorkerUnsupportedSuite();
-      }
+      });
     </script>
   </body>
 </html>
