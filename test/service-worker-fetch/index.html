@@ -29,13 +29,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </service-worker>
 
     <script>
-      suite('Importing Service Worker Scripts', function() {
-        // TODO: postMessage/message events are in flux in the Service Worker spec, so this may
-        // need to change in the future.
-        test('message handler is registered via imported script', function() {
+      suite('Service Worker Fetch Handlers', function() {
+        test('the custom fetch handler is used when the path matches', function() {
           return navigator.serviceWorker.ready.then(function() {
             return window.fetch('customFetch').then(function(response) {
               assert.equal(response.status, 204, 'Custom response status doesn\'t match');
+            });
+          });
+        });
+
+        test('the custom fetch handler isn\'t used when the path doesn\t match', function() {
+          return navigator.serviceWorker.ready.then(function() {
+            return window.fetch('dummyUrlThatShould404').then(function(response) {
+              assert.equal(response.status, 404, 'Expected response status doesn\'t match');
             });
           });
         });
