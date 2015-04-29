@@ -1,7 +1,7 @@
 # Service Worker Elements
 A set of Polymer elements that simplify service worker registration and caching, powered by the
 [`sw-toolbox` library](https://github.com/googlechrome/sw-toolbox).
-Full documentation is available at https://PolymerElements.github.com/service-worker/index.html
+Full documentation is available at https://PolymerElements.github.io/service-worker/index.html
 
 # Considerations
 
