@@ -82,6 +82,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       t.isSelectBookDisabled = function(state) {
         return !state;
       };
+
+      // Explicitly call the register() method. We need to wait until the template's variables are
+      // all set first, since the configuration depends on bound variables.
+      document.querySelector('service-worker').register();
     </script>
   </body>
 </html>
