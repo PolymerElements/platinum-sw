@@ -22,7 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <service-worker skip-waiting clients-claim>
+    <service-worker skip-waiting clients-claim auto-register>
       <service-worker-import href="custom-fetch-handler.js"></service-worker-import>
       <service-worker-fetch handler="customFetchHandler"
                             path="/(.*)/customFetch"></service-worker-fetch>

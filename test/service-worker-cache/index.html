@@ -21,7 +21,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <service-worker skip-waiting clients-claim>
+    <service-worker skip-waiting clients-claim auto-register>
       <service-worker-cache defaultCacheStrategy="networkOnly"
                             precache='["file.html", "file.txt"]'></service-worker-cache>
     </service-worker>

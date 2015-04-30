@@ -17,6 +17,7 @@ by other Service Worker Elements.
 
     <service-worker skip-waiting
                     clients-claim
+                    auto-register
                     state="{{state}}"
                     on-service-worker-error="handleSWError"
                     on-service-worker-updated="handleSWUpdated"
@@ -320,7 +321,7 @@ prerequite file you must create before `<service-worker>` can be used!
 
       attached: function() {
         if (this.autoRegister) {
-          this.register();
+          this.async(this.register);
         }
       }
     });
