@@ -1,0 +1,51 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../service-worker.html">
+    <link rel="import" href="../../service-worker-import.html">
+    <link rel="import" href="../../service-worker-fetch.html">
+  </head>
+
+  <body>
+    <service-worker skip-waiting clients-claim>
+      <service-worker-import href="custom-fetch-handler.js"></service-worker-import>
+      <service-worker-fetch handler="customFetchHandler"
+                            path="/(.*)/customFetch"></service-worker-fetch>
+    </service-worker>
+
+    <script>
+      suite('Service Worker Fetch Handlers', function() {
+        test('the custom fetch handler is used when the path matches', function() {
+          return navigator.serviceWorker.ready.then(function() {
+            return window.fetch('customFetch').then(function(response) {
+              assert.equal(response.status, 204, 'Custom response status doesn\'t match');
+            });
+          });
+        });
+
+        test('the custom fetch handler isn\'t used when the path doesn\t match', function() {
+          return navigator.serviceWorker.ready.then(function() {
+            return window.fetch('dummyUrlThatShould404').then(function(response) {
+              assert.equal(response.status, 404, 'Expected response status doesn\'t match');
+            });
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

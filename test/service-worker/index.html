@@ -13,27 +13,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../service-worker.html">
   </head>
 
   <body>
+    <service-worker skip-waiting clients-claim></service-worker>
+
     <script>
-      if (navigator.serviceWorker) {
-        WCT.loadSuites([
-          // Keep each test suite in its own directory so that it gets a SW registered with a
-          // limited scope, just in case the browser environment is not cleared in between each
-          // test suite.
-          'service-worker/index.html',
-          'service-worker-cache/index.html',
-          'service-worker-import/index.html',
-          'service-worker-fetch/index.html'
-        ]);
-      } else {
-        WCT.loadSuites([
-          'service-worker-unsupported.html'
-        ]);
-      }
+      var sw = document.querySelector('service-worker');
+
+      suite('Registration & Installation', function() {
+        test('creates an active service worker', function() {
+          return navigator.serviceWorker.ready.then(function(registration) {
+            assert.ok(registration.active);
+          });
+        });
+
+        test('state is set to "installed"', function() {
+          assert.equal(sw.state, 'installed');
+        });
+      });
     </script>
   </body>
 </html>
