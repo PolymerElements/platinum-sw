@@ -10,9 +10,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 @group Service Worker Elements
 
 The `service-worker-fetch` element creates custom [`fetch` event](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#fetch-event-section)
-handlers for given URL patterns. Possible use cases include using a special caching strategy for
-specific URLs, or returning static "fallback" responses instead of network errors when a remote API
-is unavailable—basically, any scenario in which you'd like a service worker to intercept network
+handlers for given URL patterns. Possible use cases include:
+
+- Using a special caching strategy for specific URLs.
+- Returning static "fallback" responses instead of network errors when a remote API
+is unavailable.
+
+In short, any scenario in which you'd like a service worker to intercept network
 requests and provide custom response handling.
 
 If you'd like a single caching policy applied to all same-origin requests, then an alternative to
@@ -31,7 +35,8 @@ An example configuration is:
                             path="/(.*)/customFetch"></service-worker-fetch>
     </service-worker>
 
-This implies that there's a `custom-fetch-handler.js` file which defines a `sw-toolbox` compliant
+This implies that there's a `custom-fetch-handler.js` file in the same directory as the current page,
+which defines a `sw-toolbox` compliant
 [request handler](https://github.com/googlechrome/sw-toolbox#request-handlers) named
 `customFetchHandler`. This definition is imported using `service-worker-import`. The
 `service-worker-fetch` element takes care of mapping which request paths are handled by
@@ -85,8 +90,8 @@ and different handlers. The path matching is performed top-down, starting with t
        * Some examples:
        * - `origin="https?://.+\\.google\\.com"` → a RegExp that matches `http` or `https` requests
        *   made to any domain, as long as it ends in `.google.com`.
-       * - `origin="https://www.example.com" → a RegExp that will only match `https` requests to one
-       *   domain, `www.example.com`.
+       * - `origin="https://www\\.example\\.com" → a RegExp that will only match `https` requests to
+       *   one domain, `www.example.com`.
        *
        * @see {@link https://github.com/googlechrome/sw-toolbox#toolboxrouterheadurlpattern-handler-options}
        */
