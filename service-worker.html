@@ -17,6 +17,7 @@ by other Service Worker Elements.
 
     <service-worker skip-waiting
                     clients-claim
+                    auto-register
                     state="{{state}}"
                     on-service-worker-error="handleSWError"
                     on-service-worker-updated="handleSWUpdated"
@@ -76,6 +77,23 @@ prerequite file you must create before `<service-worker>` can be used!
        */
 
       properties: {
+        /**
+         * Whether this element should automatically register the corresponding service worker as
+         * soon as its added to a page.
+         *
+         * If set to `false`, then the service worker won't be automatically registered, and you
+         * must call this element's register() method if you want service worker functionality.
+         * This is useful if, for example, the service worker needs to be configured using
+         * information that isn't immediately available at the time the page loads.
+         *
+         * If set to `true`, the service worker will be automatically registered without having to
+         * call any methods.
+         */
+        autoRegister: {
+          type: Boolean,
+          value: false
+        },
+
         /**
          * Whether the activated service worker should [take immediate control](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#clients-claim-method)
          * of any pages under its scope.
@@ -184,6 +202,79 @@ prerequite file you must create before `<service-worker>` can be used!
         }
       },
 
+      /**
+       * Registers the service worker based on the configuration options in this element and any
+       * child elements.
+       *
+       * If you set the `autoRegister` property to `true`, then this method is called automatically
+       * at page load.
+       * It can be useful to set `autoRegister` to `false` and then explicitly call this method if
+       * there are options that are only configured after the page is loaded.
+       */
+      register: function() {
+        var serviceWorkerUrl = this._constructServiceWorkerUrl();
+        if (serviceWorkerUrl) {
+          this._registerServiceWorker(serviceWorkerUrl);
+        }
+      },
+
+      _constructServiceWorkerUrl: function() {
+        if ('serviceWorker' in navigator) {
+          var params = {
+            baseURI: baseURI,
+            version: this._version
+          };
+
+          var children = Polymer.dom(this).childNodes;
+          for (var i = 0; i < children.length; i++) {
+            if (typeof children[i].getParameters === 'function') {
+              var childParams = children[i].getParameters(baseURI);
+              Object.keys(childParams).forEach(function(key) {
+                if (Array.isArray(params[key])) {
+                  params[key].push(childParams[key]);
+                } else {
+                  params[key] = [childParams[key]];
+                }
+              });
+            }
+          }
+
+          if (params.importscript) {
+            params.importscript = this._unique(params.importscript);
+          }
+
+          params.clientsClaim = this.clientsClaim;
+          params.skipWaiting = this.skipWaiting;
+
+          var serviceWorkerUrl = new URL(this.href, window.location);
+          // It's very important to ensure that the serialization is stable.
+          // Serializing the same settings should always produce the same URL.
+          // Serializing different settings should always produce a different URL.
+          // This ensures that the service worker upgrade flow is triggered when settings change.
+          serviceWorkerUrl.search = this._serializeUrlParams(params);
+
+          return serviceWorkerUrl;
+        } else {
+          this._setState('unsupported');
+          this.fire('service-worker-error', 'Service workers are not available in the current browser.');
+        }
+      },
+
+      _unique: function(arr) {
+        return arr.filter(function(item, index) {
+          return arr.indexOf(item) === index;
+        });
+      },
+
+      _serializeUrlParams: function(params) {
+        return Object.keys(params).sort().map(function(key) {
+          // encodeURIComponent(['a', 'b']) => 'a%2Cb',
+          // so this will still work when the values are Arrays.
+          // TODO: It won't work if the values in the Arrays have ',' characters in them.
+          return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
+        }).join('&');
+      },
+
       _registerServiceWorker: function(serviceWorkerUrl) {
         navigator.serviceWorker.register(serviceWorkerUrl, {scope: this.scope}).then(function(registration) {
           if (registration.active) {
@@ -228,65 +319,9 @@ prerequite file you must create before `<service-worker>` can be used!
         }.bind(this));
       },
 
-      _serializeUrlParams: function(params) {
-        return Object.keys(params).sort().map(function(key) {
-          // encodeURIComponent(['a', 'b']) => 'a%2Cb',
-          // so this will still work when the values are Arrays.
-          // TODO: It won't work if the values in the Arrays have ',' characters in them.
-          return encodeURIComponent(key) + "=" + encodeURIComponent(params[key]);
-        }).join('&');
-      },
-
-      _unique: function(arr) {
-        return arr.filter(function(item, index) {
-          return arr.indexOf(item) === index;
-        });
-      },
-
-      ready: function() {
-        if ('serviceWorker' in navigator) {
-          this.async(function() {
-            var params = {
-              baseURI: baseURI,
-              version: this._version
-            };
-
-            var children = Polymer.dom(this).childNodes;
-            for (var i = 0; i < children.length; i++) {
-              if (typeof children[i].getParameters === 'function') {
-                var childParams = children[i].getParameters(baseURI);
-                Object.keys(childParams).forEach(function(key) {
-                  if (Array.isArray(params[key])) {
-                    params[key].push(childParams[key]);
-                  } else {
-                    params[key] = [childParams[key]];
-                  }
-                });
-              }
-            }
-
-            if (params.importscript) {
-              params.importscript = this._unique(params.importscript);
-            }
-
-            params.clientsClaim = this.clientsClaim;
-            params.skipWaiting = this.skipWaiting;
-
-            var serviceWorkerUrl = new URL(this.href, window.location);
-            // It's very important to ensure that the serialization is stable.
-            // Serializing the same settings should always produce the same URL.
-            // Serializing different settings should always produce a different URL.
-            // This ensures that the service worker upgrade flow is triggered when settings change.
-            serviceWorkerUrl.search = this._serializeUrlParams(params);
-
-            this._registerServiceWorker(serviceWorkerUrl);
-          }, 20); // HACK - Attributes in the children element that are populated via x-autobind
-                  // template substitution apparently need some time to stamp out. Try to figure
-                  // out if there's a better way of consuming parameters from children elements
-                  // in general, via some sort of lifecycle event.
-        } else {
-          this._setState('unsupported');
-          this.fire('service-worker-error', 'Service workers are not available in the current browser.');
+      attached: function() {
+        if (this.autoRegister) {
+          this.async(this.register);
         }
       }
     });
