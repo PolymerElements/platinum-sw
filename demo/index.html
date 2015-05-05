@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         worker support will still have a functional (online-only) eBook reader.
       </p>
 
-      <select id="selectBook" on-change="selectBook" disabled$="{{isSelectBookDisabled(state)}}">
+      <select on-change="selectBook" disabled disabled$="{{isSelectBookDisabled(state)}}">
         <option disabled selected>Select a Book...</option>
         <template is="x-repeat" id="books" items="{{books}}">
           <option>{{item.title}}</option>
