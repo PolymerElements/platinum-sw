@@ -19,7 +19,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <template is="x-autobind" id="page-template">
+    <template is="dom-bind" id="page-template">
       <service-worker skip-waiting
                       clients-claim
                       reload-on-install
@@ -42,7 +42,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <select on-change="selectBook" disabled disabled$="{{isSelectBookDisabled(state)}}">
         <option disabled selected>Select a Book...</option>
-        <template is="x-repeat" id="books" items="{{books}}">
+        <template is="dom-repeat" id="books" items="{{books}}">
           <option>{{item.title}}</option>
         </template>
       </select>

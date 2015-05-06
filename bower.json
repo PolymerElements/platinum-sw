@@ -1,7 +1,7 @@
 {
   "name": "service-worker",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "authors": [
     "The Polymer Authors"
   ],
@@ -23,12 +23,12 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.8.0-rc.7",
+    "polymer": "Polymer/polymer#^0.9.0-rc.1",
     "sw-toolbox": "^2.0.0"
   },
   "devDependencies": {
-    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.8.8",
-    "marked-element": "PolymerElements/marked-element#^0.8.3",
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.9.0",
+    "marked-element": "PolymerElements/marked-element#^0.9.0",
     "web-component-tester": "Polymer/web-component-tester#^2.2.6"
   }
 }
