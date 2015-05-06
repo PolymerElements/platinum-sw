@@ -23,24 +23,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <body>
     <service-worker skip-waiting clients-claim auto-register>
       <service-worker-cache defaultCacheStrategy="networkOnly"
-                            precache='["file.html", "file.txt"]'></service-worker-cache>
+                            precache='["file.html", "file.txt"]'
+                            precache-file="files.json"></service-worker-cache>
     </service-worker>
 
     <script>
-      var swc = document.querySelector('service-worker-cache');
+      if (window.caches) {
+        var swc = document.querySelector('service-worker-cache');
 
-      suite('Precaching', function() {
-        test('precache results in Cache Storage API entries', function() {
-          return navigator.serviceWorker.ready.then(function() {
-            return Promise.all(swc.precache.map(function(file) {
-              var url = new URL(file, window.location.href);
-              return window.caches.match(url).then(function(cachedResponse) {
-                assert.ok(cachedResponse, 'No match in Cache Storage API for ' + url);
-              });
-            }));
+        suite('Precaching', function() {
+          test('precache results in Cache Storage API entries', function() {
+            return navigator.serviceWorker.ready.then(function() {
+              window.fetch(swc.precacheFile).then(function(response) {
+                return response.json();
+              }).then(function(files) {
+                return swc.precache.concat(files);
+              }).then(function(files) {
+                console.log(files);
+                return Promise.all(files.map(function(file) {
+                  var url = new URL(file, window.location.href);
+                  return window.caches.match(url).then(function(cachedResponse) {
+                    assert.ok(cachedResponse, 'No match in Cache Storage API for ' + url);
+                  });
+                }));
+              })
+            });
           });
         });
-      });
+      }
     </script>
   </body>
 </html>
