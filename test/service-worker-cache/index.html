@@ -39,14 +39,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }).then(function(files) {
                 return swc.precache.concat(files);
               }).then(function(files) {
-                console.log(files);
                 return Promise.all(files.map(function(file) {
                   var url = new URL(file, window.location.href);
                   return window.caches.match(url).then(function(cachedResponse) {
                     assert.ok(cachedResponse, 'No match in Cache Storage API for ' + url);
                   });
                 }));
-              })
+              });
             });
           });
         });
