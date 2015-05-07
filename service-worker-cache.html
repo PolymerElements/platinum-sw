@@ -64,20 +64,55 @@ be used.
        * i.e. a list of resources that are needed by one of the subpages of your site, or a list of
        * resources that are only loaded via user interaction.
        *
+       * `precache` can be used in conjunction with `precacheFile`, and the two arrays will be
+       * concatenated.
+       *
        * @see {@link https://github.com/GoogleChrome/sw-toolbox#toolboxprecachearrayofurls}
        */
       precache: {
         type: Array,
         value: function() { return []; }
-      }
+      },
+
+      /**
+       * Used to provide a list of URLs that are always precached as soon as the service worker is
+       * installed. Corresponds to  [`sw-toolbox`'s `precache()` method](https://github.com/GoogleChrome/sw-toolbox#toolboxprecachearrayofurls).
+       *
+       * While the `precache` option supports provided the array of URLs in as an inline attribute,
+       * this option supports providing them as an array in JSON file, which is fetched at runtime.
+       * This is useful if the array is generated via a separate build step, as it's easier to
+       * write that output to a file then it is to modify inline HTML content.
+       *
+       * `precacheFile` can be used in conjunction with `precache`, and the two arrays will be
+       * concatenated.
+       *
+       * @see {@link https://github.com/GoogleChrome/sw-toolbox#toolboxprecachearrayofurls}
+       */
+      precacheFile: String
     },
 
     getParameters: function(baseURI) {
-      return {
-        importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
-        defaultCacheStrategy: this.defaultCacheStrategy,
-        precache: this.precache
-      };
+      return new Promise(function(resolve) {
+        var params = {
+          importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
+          defaultCacheStrategy: this.defaultCacheStrategy,
+          precache: this.precache
+        };
+
+        if (this.precacheFile) {
+          window.fetch(this.precacheFile).then(function(response) {
+            if (!response.ok) {
+              throw Error('Unable to load ' + this.precacheFile);
+            }
+            return response.json();
+          }).then(function(files) {
+            params.precache = params.precache.concat(files);
+            resolve(params);
+          });
+        } else {
+          resolve(params);
+        }
+      }.bind(this));
     }
   });
 </script>

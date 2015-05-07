@@ -50,11 +50,13 @@ call made from the context of the service worker.
     },
 
     getParameters: function() {
-      var params = {};
-      if (this.href) {
-        params.importscript = this.href;
-      }
-      return params;
+      return new Promise(function(resolve) {
+        var params = {};
+        if (this.href) {
+          params.importscript = this.href;
+        }
+        resolve(params);
+      }.bind(this));
     }
   });
 </script>

@@ -122,13 +122,15 @@ and different handlers. The path matching is performed top-down, starting with t
     },
 
     getParameters: function(baseURI) {
-      var params = {
-        importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href
-      };
-      if (this.path && this.handler) {
-        params.route = [this.path, this.handler, this.origin];
-      }
-      return params;
+      return new Promise(function(resolve) {
+        var params = {
+          importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href
+        };
+        if (this.path && this.handler) {
+          params.route = [this.path, this.handler, this.origin];
+        }
+        resolve(params);
+      }.bind(this));
     }
   });
 </script>

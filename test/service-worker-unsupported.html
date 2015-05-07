@@ -20,14 +20,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <service-worker></service-worker>
+    <service-worker auto-register></service-worker>
 
     <script>
-      var sw = document.querySelector('service-worker');
-
-      suite('Unsupported', function() {
-        test('state is set to "unsupported"', function() {
-          assert.equal(sw.state, 'unsupported');
+      document.addEventListener('WebComponentsReady', function() {
+        var sw = document.querySelector('service-worker');
+        suite('Unsupported', function() {
+          test('state is properly set', function() {
+            assert.equal(sw.state, 'unsupported');
+          });
         });
       });
     </script>
