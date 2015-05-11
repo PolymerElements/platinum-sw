@@ -9,11 +9,13 @@ Full documentation is available at https://PolymerElements.github.io/service-wor
 While `<service-worker>` abstracts away many of the details of working with service workers, there
 is one specific requirement that developers must fulfill: it needs to register a JavaScript file
 located at the top-level of your site's web root. (Details behind this requirement can be found in
-the Service Worker specification [issue tracker](https://github.com/slightlyoff/ServiceWorker/issues/468#issuecomment-60276779).)
+the service worker specification [issue tracker](https://github.com/slightlyoff/ServiceWorker/issues/468#issuecomment-60276779).)
 
 In order to use `<service-worker>`, it's recommended that you create a `sw-import.js` file in your
 site's web root. The file's only contents should be
+
     importScripts('bower_components/service-worker/service-worker.js');
+
 You can adjust the path to `service-worker.js` if your project has its Polymer elements
 installed somewhere other than `bower_components/`.
 
