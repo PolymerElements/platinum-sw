@@ -40,12 +40,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         worker support will still have a functional (online-only) eBook reader.
       </p>
 
-      <select on-change="selectBook" disabled disabled$="{{isSelectBookDisabled(state)}}">
-        <option disabled selected>Select a Book...</option>
-        <template is="dom-repeat" id="books" items="{{books}}">
-          <option>{{item.title}}</option>
-        </template>
-      </select>
+      <template is="dom-if" if="[[state]]">
+        <select on-change="selectBook">
+          <option disabled selected>Select a Book...</option>
+          <template is="dom-repeat" id="books" items="[[books]]">
+            <option>{{item.title}}</option>
+          </template>
+        </select>
+      </template>
 
       <marked-element markdown="{{text}}"></marked-element>
     </template>
@@ -69,7 +71,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       t.selectBook = function(e) {
-        var selectedBook = this.$.books.itemForElement(e.target.selectedOptions[0]);
+        var books = document.querySelector('#books');
+        var selectedBook = books.itemForElement(e.target.selectedOptions[0]);
         window.fetch(selectedBook.url).then(function(response) {
           return response.text();
         }).then(function(text) {
@@ -77,15 +80,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       };
 
-      // Disable book selection until the service worker state is known. This works around someone
-      // selecting a book then having the page reload due to a new service worker installation.
-      t.isSelectBookDisabled = function(state) {
-        return !state;
-      };
-
-      // Explicitly call the register() method. We need to wait until the template's variables are
-      // all set first, since the configuration depends on bound variables.
-      document.querySelector('platinum-sw-register').register();
+      window.addEventListener('WebComponentsReady', function() {
+        // Explicitly call the register() method. We need to wait until the template's variables are
+        // all set first, since the configuration depends on bound variables.
+        document.querySelector('platinum-sw-register').register();
+      });
     </script>
   </body>
 </html>
