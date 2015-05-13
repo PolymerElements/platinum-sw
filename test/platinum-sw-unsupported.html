@@ -16,15 +16,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../service-worker.html">
+    <link rel="import" href="../platinum-sw-register.html">
   </head>
 
   <body>
-    <service-worker auto-register></service-worker>
+    <platinum-sw-register auto-register></platinum-sw-register>
 
     <script>
       document.addEventListener('WebComponentsReady', function() {
-        var sw = document.querySelector('service-worker');
+        var sw = document.querySelector('platinum-sw-register');
         suite('Unsupported', function() {
           test('state is properly set', function() {
             assert.equal(sw.state, 'unsupported');

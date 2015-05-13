@@ -11,29 +11,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>&lt;service-worker&gt; Demo</title>
+    <title>Platinum Service Worker Elements Demo</title>
 
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
-    <link rel="import" href="../service-worker-elements.html">
+    <link rel="import" href="../platinum-sw-elements.html">
     <link rel="import" href="../../marked-element/marked-element.html">
   </head>
 
   <body>
     <template is="dom-bind" id="page-template">
-      <service-worker skip-waiting
-                      clients-claim
-                      reload-on-install
-                      state="{{state}}">
-        <service-worker-cache default-cache-strategy="networkFirst"
-                              precache="{{precacheList}}"></service-worker-cache>
-      </service-worker>
+      <platinum-sw-register skip-waiting
+                            clients-claim
+                            reload-on-install
+                            state="{{state}}">
+        <platinum-sw-cache default-cache-strategy="networkFirst"
+                           precache="{{precacheList}}"></platinum-sw-cache>
+      </platinum-sw-register>
 
-      <h1>&lt;service-worker&gt; Demo</h1>
+      <h1>Platinum Service Worker Elements Demo</h1>
       <p>This is a simple offline-capable eBook reader.</p>
       <p>
         On browsers that support service workers, this page itself and all the books are all
-        available offline, by virtue of the <code>&lt;service-worker></code> and
-        <code>&lt;service-worker-cache></code> elements.
+        available offline, by virtue of the <code>&lt;platinum-sw-register></code> and
+        <code>&lt;platinum-sw-cache></code> elements.
       </p>
       <p>
         Service workers are meant to be a progressive enhancement, and browsers that lack service
@@ -85,7 +85,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       // Explicitly call the register() method. We need to wait until the template's variables are
       // all set first, since the configuration depends on bound variables.
-      document.querySelector('service-worker').register();
+      document.querySelector('platinum-sw-register').register();
     </script>
   </body>
 </html>

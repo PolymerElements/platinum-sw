@@ -16,20 +16,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../../web-component-tester/browser.js"></script>
 
-    <link rel="import" href="../../service-worker.html">
-    <link rel="import" href="../../service-worker-cache.html">
+    <link rel="import" href="../../platinum-sw-register.html">
+    <link rel="import" href="../../platinum-sw-cache.html">
   </head>
 
   <body>
-    <service-worker skip-waiting clients-claim auto-register>
-      <service-worker-cache defaultCacheStrategy="networkOnly"
-                            precache='["file.html", "file.txt"]'
-                            precache-file="files.json"></service-worker-cache>
-    </service-worker>
+    <platinum-sw-register skip-waiting clients-claim auto-register>
+      <platinum-sw-cache defaultCacheStrategy="networkOnly"
+                         precache='["file.html", "file.txt"]'
+                         precache-file="files.json"></platinum-sw-cache>
+    </platinum-sw-register>
 
     <script>
       if (window.caches) {
-        var swc = document.querySelector('service-worker-cache');
+        var swc = document.querySelector('platinum-sw-cache');
 
         suite('Precaching', function() {
           test('precache results in Cache Storage API entries', function() {

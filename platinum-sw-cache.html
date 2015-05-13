@@ -7,18 +7,18 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Service Worker Elements
+@group Platinum Service Worker Elements
 
-The `service-worker-cache` element makes it easy to precache specific resources, perform runtime
+The `platinum-sw-cache` element makes it easy to precache specific resources, perform runtime
 caching, and serve your cached resources when a network is unavailable.
 Under the hood, the [sw-toolbox](https://github.com/googlechrome/sw-toolbox) library is used for
 all the caching and request handling logic.
-`service-worker-cache` needs to be a child element of `service-worker`.
+`platinum-sw-cache` needs to be a child element of `platinum-sw-register`.
 A simple, yet useful configuration is
 
-    <service-worker>
-      <service-worker-cache></service-worker-cache>
-    </service-worker>
+    <platinum-sw-register>
+      <platinum-sw-cache></platinum-sw-cache>
+    </platinum-sw-register>
 
 This is enough to have all of the (local) resources your site uses cached at runtime.
 (It uses the default `defaultCacheStrategy` of "networkFirst".)
@@ -26,7 +26,7 @@ When there's a network available, visits to your site will go against the networ
 resources, but if someone visits your site when they're offline, all the cached resources will
 be used.
 
-@element service-worker-cache
+@element platinum-sw-cache
 @status preview
 @homepage github.io
 -->
@@ -35,7 +35,7 @@ be used.
 
 <script>
   Polymer({
-    is: 'service-worker-cache',
+    is: 'platinum-sw-cache',
 
     properties: {
       /**
@@ -47,7 +47,7 @@ be used.
        *
        * Note that the "cacheFirst" and "cacheOnly" strategies are not recommended, and may be
        * explicitly prevented in a future release. More information can be found at
-       * https://github.com/PolymerElements/service-worker#cacheonly--cachefirst-defaultcachestrategy-considered-harmful
+       * https://github.com/PolymerElements/platinum-sw#cacheonly--cachefirst-defaultcachestrategy-considered-harmful
        *
        * @see {@link https://github.com/GoogleChrome/sw-toolbox#built-in-handlers}
        */
