@@ -249,6 +249,14 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
 
           return params;
         }.bind(this)).then(function(params) {
+          if (params.importscriptLate) {
+            if (params.importscript) {
+              params.importscript = params.importscript.concat(params.importscriptLate);
+            } else {
+              params.importscript = params.importscriptLate;
+            }
+          }
+
           if (params.importscript) {
             params.importscript = this._unique(params.importscript);
           }
