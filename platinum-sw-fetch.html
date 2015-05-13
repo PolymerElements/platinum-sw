@@ -7,9 +7,9 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Service Worker Elements
+@group Platinum Service Worker Elements
 
-The `service-worker-fetch` element creates custom [`fetch` event](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#fetch-event-section)
+The `platinum-sw-fetch` element creates custom [`fetch` event](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#fetch-event-section)
 handlers for given URL patterns. Possible use cases include:
 
 - Using a special caching strategy for specific URLs.
@@ -20,34 +20,34 @@ In short, any scenario in which you'd like a service worker to intercept network
 requests and provide custom response handling.
 
 If you'd like a single caching policy applied to all same-origin requests, then an alternative to
-using `service-worker-fetch` is to use `service-worker-cache` with the `defaultCacheStategy`
+using `platinum-sw-fetch` is to use `platinum-sw-cache` with the `defaultCacheStategy`
 property set.
 
 Under the hood, the [sw-toolbox](https://github.com/googlechrome/sw-toolbox) library is used for
 all the request handling logic.
 
-`service-worker-fetch` needs to be a child element of `service-worker`.
+`platinum-sw-fetch` needs to be a child element of `platinum-sw-register`.
 An example configuration is:
 
-    <service-worker>
-      <service-worker-import href="custom-fetch-handler.js"></service-worker-import>
-      <service-worker-fetch handler="customFetchHandler"
-                            path="/(.*)/customFetch"></service-worker-fetch>
-    </service-worker>
+    <platinum-sw-register>
+      <platinum-sw-import-script href="custom-fetch-handler.js"></platinum-sw-import-script>
+      <platinum-sw-fetch handler="customFetchHandler"
+                         path="/(.*)/customFetch"></platinum-sw-fetch>
+    </platinum-sw-register>
 
 This implies that there's a `custom-fetch-handler.js` file in the same directory as the current page,
 which defines a `sw-toolbox` compliant
 [request handler](https://github.com/googlechrome/sw-toolbox#request-handlers) named
-`customFetchHandler`. This definition is imported using `service-worker-import`. The
-`service-worker-fetch` element takes care of mapping which request paths are handled by
+`customFetchHandler`. This definition is imported using `platinum-sw-import-script`. The
+`platinum-sw-fetch` element takes care of mapping which request paths are handled by
 `customFetchHandler`.
 
-Anything not matching the `path` pattern is ignored by `service-worker-fetch`,
-and it's possible to have multiple `service-worker-fetch` elements that each define different paths
+Anything not matching the `path` pattern is ignored by `platinum-sw-fetch`,
+and it's possible to have multiple `platinum-sw-fetch` elements that each define different paths
 and different handlers. The path matching is performed top-down, starting with the first
-`service-worker-fetch` element.
+`platinum-sw-fetch` element.
 
-@element service-worker-fetch
+@element platinum-sw-fetch
 @status preview
 @homepage github.io
 -->
@@ -56,7 +56,7 @@ and different handlers. The path matching is performed top-down, starting with t
 
 <script>
   Polymer({
-    is: 'service-worker-fetch',
+    is: 'platinum-sw-fetch',
 
     properties: {
       /**
@@ -68,7 +68,7 @@ and different handlers. The path matching is performed top-down, starting with t
        * [`toolbox` scope](https://github.com/googlechrome/sw-toolbox#built-in-handlers)
        * (e.g. 'networkFirst', 'fastest', 'networkOnly', etc.) or a function defined in the
        * [`ServiceWorkerGlobalScope`](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#service-worker-global-scope),
-       * like a function that is defined in a file that's imported via `service-worker-import`.
+       * like a function that is defined in a file that's imported via `platinum-sw-import-script`.
        **
        * @see {@link https://github.com/GoogleChrome/sw-toolbox#built-in-handlers}
        */

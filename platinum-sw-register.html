@@ -7,28 +7,28 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Service Worker Elements
+@group Platinum Service Worker Elements
 
-The `service-worker` element handles
+The `platinum-sw-register` element handles
 [service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
 registration, reflects the overall service worker state, and coordinates the configuration provided
 by other Service Worker Elements.
-`service-worker` is used as a parent element for children in the Service Worker Element group.
+`platinum-sw-register` is used as a parent element for children in the Service Worker Element group.
 
-    <service-worker skip-waiting
-                    clients-claim
-                    auto-register
-                    state="{{state}}"
-                    on-service-worker-error="handleSWError"
-                    on-service-worker-updated="handleSWUpdated"
-                    on-service-worker-installed="handleSWInstalled">
-      ...one or more <service-worker-*> children which share the service worker registration...
-    </service-worker>
+    <platinum-sw-register skip-waiting
+                          clients-claim
+                          auto-register
+                          state="{{state}}"
+                          on-service-worker-error="handleSWError"
+                          on-service-worker-updated="handleSWUpdated"
+                          on-service-worker-installed="handleSWInstalled">
+      ...one or more <platinum-sw-*> children which share the service worker registration...
+    </platinum-sw-register>
 
-Please see https://github.com/PolymerElements/service-worker#top-level-sw-importjs for a *crucial*
-prerequite file you must create before `<service-worker>` can be used!
+Please see https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs for a *crucial*
+prerequisite file you must create before `<platinum-sw-register>` can be used!
 
-@element service-worker
+@element platinum-sw-register
 @status preview
 @homepage github.io
 -->
@@ -41,9 +41,9 @@ prerequite file you must create before `<service-worker>` can be used!
     var baseURI = document.currentScript.baseURI;
 
     Polymer({
-      is: 'service-worker',
+      is: 'platinum-sw-register',
 
-      // Used as an "emergency" switch if we make breaking changes in the way <service-worker> talks
+      // Used as an "emergency" switch if we make breaking changes in the way <platinum-sw-register> talks
       // to service-worker.js. Otherwise, it shouldn't need to change, and isn't meant to be kept
       // in sync with the element's release number.
       _version: '1.0',
@@ -51,7 +51,7 @@ prerequite file you must create before `<service-worker>` can be used!
       /**
        * Fired when the initial service worker installation completes successfully.
        * The service worker will normally only be installed once, the first time a page with a
-       * `<service-worker>` element is visited in a given browser. If the same page is visited
+       * `<platinum-sw-register>` element is visited in a given browser. If the same page is visited
        * again, the existing service worker will be reused, and there won't be another
        * `service-worker-installed` fired.
        *
@@ -61,8 +61,8 @@ prerequite file you must create before `<service-worker>` can be used!
 
       /**
        * Fired when the service worker update flow completes successfully.
-       * If you make changes to your `<service-worker>` configuration (i.e. by adding in new
-       * `<service-worker-*>` child elements, or changing their attributes), users who had the old
+       * If you make changes to your `<platinum-sw-register>` configuration (i.e. by adding in new
+       * `<platinum-sw-*>` child elements, or changing their attributes), users who had the old
        * service worker installed will get the update installed when they see the modified elements.
        *
        * @event service-worker-updated
@@ -117,9 +117,9 @@ prerequite file you must create before `<service-worker>` can be used!
          * It's *strongly* recommended that you create a top-level file named `sw-import.js`
          * containing only:
          *
-         * `importScripts('bower_components/service-worker/service-worker.js');`
+         * `importScripts('bower_components/platinum-sw/service-worker.js');`
          *
-         * (adjust to match the path where your `service-worker` element directory can be found).
+         * (adjust to match the path where your `platinum-sw` element directory can be found).
          *
          * This will ensure that your service worker script contains everything needed to play
          * nicely with the Service Worker Elements group.
@@ -137,12 +137,12 @@ prerequite file you must create before `<service-worker>` can be used!
          *
          * While it's perfectly valid to continue using a page with a freshly installed service
          * worker, it's a common pattern to want to reload it immediately following the install.
-         * This ensures that, for example, if you're using a `<service-worker-cache>` with an on the
+         * This ensures that, for example, if you're using a `<platinum-sw-cache>` with an on the
          * fly caching strategy, it will get a chance to intercept all the requests needed to render
          * your page and store them in the cache.
          *
          * If you don't immediately reload your page, then any resources that were loaded before the
-         * service worker was installed (e.g. this `service-worker.html` file) won't be present
+         * service worker was installed (e.g. this `platinum-sw-register.html` file) won't be present
          * in the cache until the next time the page is loaded.
          *
          * Note that this reload will only happen when a service worker is installed for the first
@@ -320,8 +320,8 @@ prerequite file you must create before `<service-worker>` can be used!
           if (error.name === 'NetworkError') {
             var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
             console.error('A valid service worker script was not found at ' + location + '\n' +
-            'To learn how to fix this, please see\n' +
-            'https://github.com/PolymerElements/service-worker#top-level-sw-importjs');
+              'To learn how to fix this, please see\n' +
+              'https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs');
           }
         }.bind(this));
       },

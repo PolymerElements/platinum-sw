@@ -27,7 +27,7 @@ self.params = deserializeUrlParams(location.search.substring(1));
 
 if (params.get('version') !== VERSION) {
   throw 'The registered script is version ' + VERSION +
-        ' and cannot be used with <service-worker> version ' + params.get('version');
+        ' and cannot be used with <platinum-sw-register> version ' + params.get('version');
 }
 
 if (params.has('importscript')) {
@@ -50,5 +50,3 @@ if (params.get('clientsClaim') === 'true' && self.clients && self.clients.claim)
     e.waitUntil(self.clients.claim());
   });
 }
-
-// TODO: Add in a message handler, and respond to commands proxied via <service-worker>
