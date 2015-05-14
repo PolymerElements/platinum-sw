@@ -94,7 +94,7 @@ be used.
     getParameters: function(baseURI) {
       return new Promise(function(resolve) {
         var params = {
-          importscript: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
+          importscriptLate: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
           defaultCacheStrategy: this.defaultCacheStrategy,
           precache: this.precache
         };
@@ -102,11 +102,14 @@ be used.
         if (this.precacheFile) {
           window.fetch(this.precacheFile).then(function(response) {
             if (!response.ok) {
-              throw Error('Unable to load ' + this.precacheFile);
+              throw Error('unable to load ' + this.precacheFile);
             }
             return response.json();
-          }).then(function(files) {
+          }.bind(this)).then(function(files) {
             params.precache = params.precache.concat(files);
+          }).catch(function(error) {
+            console.info('Skipping precaching: ' + error.message);
+          }).then(function() {
             resolve(params);
           });
         } else {
