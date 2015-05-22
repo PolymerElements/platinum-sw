@@ -15,7 +15,40 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="../platinum-sw-elements.html">
+    <link rel="import" href="../../pageable-text/pageable-text.html">
     <link rel="import" href="../../marked-element/marked-element.html">
+
+    <style>
+      #flex-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      #ui-container {
+        margin: 1em;
+      }
+
+      #text-container {
+        flex: 1;
+        position: relative;
+      }
+
+      pageable-text {
+        background-color: rgb(248, 248, 248);
+        border-radius: 1em;
+        bottom: 1em;
+        left: 1em;
+        padding: 1em;
+        position: absolute;
+        right: 1em;
+        top: 0;
+      }
+    </style>
   </head>
 
   <body>
@@ -28,28 +61,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                            precache="{{precacheList}}"></platinum-sw-cache>
       </platinum-sw-register>
 
-      <h1>Platinum Service Worker Elements Demo</h1>
-      <p>This is a simple offline-capable eBook reader.</p>
-      <p>
-        On browsers that support service workers, this page itself and all the books are all
-        available offline, by virtue of the <code>&lt;platinum-sw-register></code> and
-        <code>&lt;platinum-sw-cache></code> elements.
-      </p>
-      <p>
-        Service workers are meant to be a progressive enhancement, and browsers that lack service
-        worker support will still have a functional (online-only) eBook reader.
-      </p>
+      <div id="flex-container">
+        <div id="ui-container">
+          <h1>Platinum Service Worker Elements Demo</h1>
+          <p>This is a simple offline-capable eBook reader.</p>
+          <p>
+            On browsers that support service workers, this page itself and all the books are all
+            available offline, by virtue of the <code>&lt;platinum-sw-register></code> and
+            <code>&lt;platinum-sw-cache></code> elements.
+          </p>
+          <p>
+            Service workers are meant to be a progressive enhancement, and browsers that lack service
+            worker support will still have a functional (online-only) eBook reader.
+          </p>
 
-      <template is="dom-if" if="[[state]]">
-        <select on-change="selectBook">
-          <option disabled selected>Select a Book...</option>
-          <template is="dom-repeat" id="books" items="[[books]]">
-            <option>{{item.title}}</option>
+          <template is="dom-if" if="[[state]]">
+            <select on-change="selectBook">
+              <option disabled selected>Select a Book...</option>
+              <template is="dom-repeat" id="books" items="[[books]]">
+                <option>{{item.title}}</option>
+              </template>
+            </select>
           </template>
-        </select>
-      </template>
+        </div>
 
-      <marked-element markdown="{{text}}"></marked-element>
+        <div id="text-container">
+          <pageable-text>
+            <marked-element markdown="{{text}}"
+                            on-marked-render-complete="repaginate"></marked-element>
+          </pageable-text>
+        </div>
+      </div>
     </template>
 
     <script>
@@ -78,6 +120,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }).then(function(text) {
           t.text = text;
         });
+      };
+
+      t.repaginate = function() {
+        document.querySelector('pageable-text').repaginate();
       };
 
       window.addEventListener('WebComponentsReady', function() {

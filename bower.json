@@ -28,7 +28,8 @@
   },
   "devDependencies": {
     "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.9.0",
-    "marked-element": "PolymerElements/marked-element#^0.9.0",
+    "marked-element": "jeffposnick/marked-element#master",
+    "pageable-text": "jeffposnick/pageable-text#^2.0.0",
     "web-component-tester": "Polymer/web-component-tester#^2.2.6"
   }
 }
