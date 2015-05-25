@@ -23,12 +23,12 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.9.0-rc.1",
+    "polymer": "Polymer/polymer#^0.9.1",
     "sw-toolbox": "^2.0.0"
   },
   "devDependencies": {
-    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.9.0",
-    "marked-element": "PolymerElements/marked-element#^0.9.0",
-    "web-component-tester": "Polymer/web-component-tester#^2.2.6"
+    "iron-doc-viewer": "PolymerElements/iron-doc-viewer#^0.9.3",
+    "marked-element": "PolymerElements/marked-element#^0.9.1",
+    "web-component-tester": "Polymer/web-component-tester#^3.1.3"
   }
 }
