@@ -7,8 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Platinum Service Worker Elements
-
 The `platinum-sw-fetch` element creates custom [`fetch` event](https://slightlyoff.github.io/ServiceWorker/spec/service_worker/#fetch-event-section)
 handlers for given URL patterns. Possible use cases include:
 
@@ -121,7 +119,7 @@ and different handlers. The path matching is performed top-down, starting with t
       path: String
     },
 
-    getParameters: function(baseURI) {
+    _getParameters: function(baseURI) {
       return new Promise(function(resolve) {
         var params = {
           importscriptLate: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href

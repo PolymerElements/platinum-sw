@@ -7,8 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Platinum Service Worker Elements
-
 The `platinum-sw-import-script` is used to import a JavaScript file that is executed each time the
 service worker starts up.
 
@@ -49,7 +47,7 @@ call made from the context of the service worker.
       href: String
     },
 
-    getParameters: function() {
+    _getParameters: function() {
       return new Promise(function(resolve) {
         var params = {};
         if (this.href) {
