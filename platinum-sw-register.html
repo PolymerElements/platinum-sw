@@ -7,8 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Platinum Service Worker Elements
-
 The `platinum-sw-register` element handles
 [service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
 registration, reflects the overall service worker state, and coordinates the configuration provided
@@ -29,8 +27,7 @@ Please see https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs 
 prerequisite file you must create before `<platinum-sw-register>` can be used!
 
 @element platinum-sw-register
-@status preview
-@homepage github.io
+@demo demo/index.html
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -226,8 +223,8 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
         var paramsPromises = [];
         var children = Polymer.dom(this).childNodes;
         for (var i = 0; i < children.length; i++) {
-          if (typeof children[i].getParameters === 'function') {
-            paramsPromises.push(children[i].getParameters(baseURI));
+          if (typeof children[i]._getParameters === 'function') {
+            paramsPromises.push(children[i]._getParameters(baseURI));
           }
         }
 

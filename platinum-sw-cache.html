@@ -7,8 +7,6 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <!--
-@group Platinum Service Worker Elements
-
 The `platinum-sw-cache` element makes it easy to precache specific resources, perform runtime
 caching, and serve your cached resources when a network is unavailable.
 Under the hood, the [sw-toolbox](https://github.com/googlechrome/sw-toolbox) library is used for
@@ -27,8 +25,7 @@ resources, but if someone visits your site when they're offline, all the cached 
 be used.
 
 @element platinum-sw-cache
-@status preview
-@homepage github.io
+@demo demo/index.html
 -->
 
 <link rel="import" href="../polymer/polymer.html">
@@ -91,7 +88,7 @@ be used.
       precacheFile: String
     },
 
-    getParameters: function(baseURI) {
+    _getParameters: function(baseURI) {
       return new Promise(function(resolve) {
         var params = {
           importscriptLate: new URL('bootstrap/sw-toolbox-setup.js', baseURI).href,
