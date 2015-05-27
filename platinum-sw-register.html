@@ -6,30 +6,6 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<!--
-The `platinum-sw-register` element handles
-[service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
-registration, reflects the overall service worker state, and coordinates the configuration provided
-by other Service Worker Elements.
-`platinum-sw-register` is used as a parent element for children in the Service Worker Element group.
-
-    <platinum-sw-register skip-waiting
-                          clients-claim
-                          auto-register
-                          state="{{state}}"
-                          on-service-worker-error="handleSWError"
-                          on-service-worker-updated="handleSWUpdated"
-                          on-service-worker-installed="handleSWInstalled">
-      ...one or more <platinum-sw-*> children which share the service worker registration...
-    </platinum-sw-register>
-
-Please see https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs for a *crucial*
-prerequisite file you must create before `<platinum-sw-register>` can be used!
-
-@element platinum-sw-register
-@demo demo/index.html
--->
-
 <link rel="import" href="../polymer/polymer.html">
 
 <script>
@@ -37,12 +13,35 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
     // Grab the URI of this file to use as a base when resolving relative paths.
     var baseURI = document.currentScript.baseURI;
 
+    /**
+     * The `<platinum-sw-register>` element handles
+     * [service worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/)
+     * registration, reflects the overall service worker state, and coordinates the configuration
+     * provided by other Service Worker Elements.
+     * `<platinum-sw-register>` is used as a parent element for child elements in the
+     * `<platinum-sw-*>` group.
+     *
+     *     <platinum-sw-register skip-waiting
+     *                           clients-claim
+     *                           auto-register
+     *                           state="{{state}}"
+     *                           on-service-worker-error="handleSWError"
+     *                           on-service-worker-updated="handleSWUpdated"
+     *                           on-service-worker-installed="handleSWInstalled">
+     *       ...one or more <platinum-sw-*> children which share the service worker registration...
+     *     </platinum-sw-register>
+     *
+     * Please see https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs for a
+     * *crucial* prerequisite file you must create before `<platinum-sw-register>` can be used!
+     *
+     * @demo demo/index.html An offline-capable eReader demo.
+     */
     Polymer({
       is: 'platinum-sw-register',
 
-      // Used as an "emergency" switch if we make breaking changes in the way <platinum-sw-register> talks
-      // to service-worker.js. Otherwise, it shouldn't need to change, and isn't meant to be kept
-      // in sync with the element's release number.
+      // Used as an "emergency" switch if we make breaking changes in the way <platinum-sw-register>
+      // talks to service-worker.js. Otherwise, it shouldn't need to change, and isn't meant to be
+      // kept in sync with the element's release number.
       _version: '1.0',
 
       /**
@@ -53,7 +52,7 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
        * `service-worker-installed` fired.
        *
        * @event service-worker-installed
-       * @detail {String} A message indicating that the installation succeeded.
+       * @param {String} A message indicating that the installation succeeded.
        */
 
       /**
@@ -63,14 +62,14 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
        * service worker installed will get the update installed when they see the modified elements.
        *
        * @event service-worker-updated
-       * @detail {String} A message indicating that the update succeeded.
+       * @param {String} A message indicating that the update succeeded.
        */
 
       /**
        * Fired when an error prevents the service worker installation from completing.
        *
        * @event service-worker-error
-       * @detail {String} An error messaging indicating what went wrong.
+       * @param {String} A message indicating what went wrong.
        */
 
       properties: {
@@ -79,7 +78,7 @@ prerequisite file you must create before `<platinum-sw-register>` can be used!
          * soon as its added to a page.
          *
          * If set to `false`, then the service worker won't be automatically registered, and you
-         * must call this element's register() method if you want service worker functionality.
+         * must call this element's `register()` method if you want service worker functionality.
          * This is useful if, for example, the service worker needs to be configured using
          * information that isn't immediately available at the time the page loads.
          *
