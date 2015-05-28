@@ -23,12 +23,12 @@
     "tests"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.9.3",
+    "polymer": "Polymer/polymer#^0.9.4",
     "sw-toolbox": "^2.0.0"
   },
   "devDependencies": {
-    "iron-component-page": "PolymerElements/iron-component-page#^0.9.5",
-    "marked-element": "PolymerElements/marked-element#^0.9.1",
+    "iron-component-page": "PolymerElements/iron-component-page#0.9.5",
+    "marked-element": "PolymerElements/marked-element#^0.9.2",
     "web-component-tester": "*"
   }
 }

@@ -6,31 +6,30 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-<!--
-The `platinum-sw-import-script` is used to import a JavaScript file that is executed each time the
-service worker starts up.
-
-A common use case is to define a custom request handler for a `fetch`
-event, but it can be used for any type of code that you want to be executed by the service worker.
-
-    <platinum-sw-register>
-      <platinum-sw-import-script href="custom-fetch-handler.js"></platinum-sw-import-script>
-      <platinum-sw-fetch handler="customFetchHandler"
-                         path="/(.*)/customFetch"></platinum-sw-fetch>
-    </platinum-sw-register>
-
-You can specify multiple `platinum-sw-import-script` elements, each one corresponding to a different
-JavaScript file. The JavaScript files will be loaded in the order in which the
-`platinum-sw-import-script` elements appear. Under the hood, this results in an
-[`importScripts()`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts)
-call made from the context of the service worker.
-
-@element platinum-sw-import-script
--->
-
 <link rel="import" href="../polymer/polymer.html">
 
 <script>
+  /**
+   * The `<platinum-sw-import-script>` element is used to import a JavaScript file that is executed
+   * each time the service worker starts up.
+   *
+   * `<platinum-sw-import-script>` needs to be a child element of `<platinum-sw-register>`.
+   *
+   * A common use case is to define a custom request handler for a `fetch` event, but it can be used
+   * for any type of code that you want to be executed by the service worker.
+   *
+   *     <platinum-sw-register>
+   *       <platinum-sw-import-script href="custom-fetch-handler.js"></platinum-sw-import-script>
+   *       <platinum-sw-fetch handler="customFetchHandler"
+   *                          path="/(.*)/customFetch"></platinum-sw-fetch>
+   *     </platinum-sw-register>
+   *
+   * You can specify multiple `<platinum-sw-import-script>` elements, each one corresponding to a
+   * different JavaScript file. The JavaScript files will be loaded in the order in which the
+   * `<platinum-sw-import-script>` elements appear. Under the hood, this results in an
+   * [`importScripts()`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/importScripts)
+   * call made from the context of the service worker.
+   */
   Polymer({
     is: 'platinum-sw-import-script',
 
