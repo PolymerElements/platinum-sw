@@ -11,7 +11,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   (function() {
     // Grab the URI of this file to use as a base when resolving relative paths.
-    var baseURI = document.currentScript.baseURI;
+    var baseURI = document.currentScript ? document.currentScript.baseURI : './';
 
     /**
      * The `<platinum-sw-register>` element handles
