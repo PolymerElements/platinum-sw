@@ -21,7 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *       <platinum-sw-cache></platinum-sw-cache>
    *     </platinum-sw-register>
    *
-   * This is enough to have all of the (local) resources your site uses cached at runtime.
+   * This is enough to have all of the resources your site uses cached at runtime, both local and
+   * cross-origin.
    * (It uses the default `defaultCacheStrategy` of "networkFirst".)
    * When there's a network available, visits to your site will go against the network copy of the
    * resources, but if someone visits your site when they're offline, all the cached resources will
@@ -34,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     properties: {
       /**
-       * The caching strategy used for all local (i.e. same-origin) requests.
+       * The caching strategy used for all requests, both for local and cross-origin resources.
        *
        * For a list of strategies, see the [`sw-toolbox` documentation](https://github.com/GoogleChrome/sw-toolbox#built-in-handlers).
        * Specify a strategy as a string, without the "toolbox" prefix. E.g., for
