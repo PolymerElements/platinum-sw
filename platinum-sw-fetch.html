@@ -126,7 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.path && this.handler) {
           params.route = [this.path, this.handler, this.origin];
         } else {
-          console.log('The following platinum-sw-fetch element will not have any effect. ' +
+          console.warn('The following platinum-sw-fetch element will not have any effect. ' +
             'Both the "path" and "handler" attributes must be set.', this);
         }
         resolve(params);
