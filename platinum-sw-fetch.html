@@ -48,6 +48,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    * and it's possible to have multiple `<platinum-sw-fetch>` elements that each define different
    * paths and different handlers. The path matching is performed top-down, starting with the first
    * `<platinum-sw-fetch>` element.
+   *
+   * The `path` will, by default, only match same-origin requests. If you'd like to define a custom
+   * handler for requests on a specific cross-origin domain, you must use the `origin` parameter
+   * in conjunction with `path` to match the domains you'd like to handle.
    */
   Polymer({
     is: 'platinum-sw-fetch',
@@ -75,16 +79,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * `origin` is a `String`, but it is used internally to construct a
        * [`RegExp` object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions),
-       * which is used for the matching. To properly escape RegExp sequences like `\.`, it's
-       * necessary to add in an extra level of string-escaping first ('\\.').
+       * which is used for the matching.
        *
        * Note that the `origin` value will be matched against the full domain name and the protocol.
        * If you want to match  'http' and 'https', then use 'https?://' at the start of your string.
        *
        * Some examples:
-       * - `origin="https?://.+\\.google\\.com"` → a RegExp that matches `http` or `https` requests
-       *   made to any domain, as long as it ends in `.google.com`.
-       * - `origin="https://www\\.example\\.com" → a RegExp that will only match `https` requests to
+       * - `origin="https?://.+\.google\.com"` → a RegExp that matches `http` or `https` requests
+       *   made to any domain that ends in `.google.com`.
+       * - `origin="https://www\.example\.com" → a RegExp that will only match `https` requests to
        *   one domain, `www.example.com`.
        *
        * @see {@link https://github.com/googlechrome/sw-toolbox#toolboxrouterheadurlpattern-handler-options}
