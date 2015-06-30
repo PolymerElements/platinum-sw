@@ -222,7 +222,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _constructServiceWorkerUrl: function() {
         var paramsPromises = [];
-        var children = Polymer.dom(this).childNodes;
+        var children = Polymer.dom(this).children;
         for (var i = 0; i < children.length; i++) {
           if (typeof children[i]._getParameters === 'function') {
             paramsPromises.push(children[i]._getParameters(baseURI));
