@@ -11,6 +11,10 @@
 var swToolboxURL = new URL('../sw-toolbox/sw-toolbox.js', params.get('baseURI')).href;
 importScripts(swToolboxURL);
 
+if (params.has('cacheId')) {
+  toolbox.options.cacheName = params.get('cacheId') + '$$$' + self.registration.scope;
+}
+
 if (params.has('defaultCacheStrategy')) {
   var strategy = params.get('defaultCacheStrategy');
   toolbox.router.default = toolbox[strategy] || self[strategy];
