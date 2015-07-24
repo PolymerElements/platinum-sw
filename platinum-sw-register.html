@@ -252,9 +252,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         paramsResolutions.forEach(function(childParams) {
           Object.keys(childParams).forEach(function(key) {
             if (Array.isArray(params[key])) {
-              params[key].push(childParams[key]);
+              params[key] = params[key].concat(childParams[key]);
             } else {
-              params[key] = [childParams[key]];
+              params[key] = [].concat(childParams[key]);
             }
           });
         });
@@ -272,6 +272,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (params.importscript) {
           params.importscript = this._unique(params.importscript);
         }
+
+        // We've already concatenated importscriptLate, so don't include it in the serialized URL.
+        delete params.importscriptLate;
 
         params.clientsClaim = this.clientsClaim;
         params.skipWaiting = this.skipWaiting;
