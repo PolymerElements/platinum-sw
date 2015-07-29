@@ -2,5 +2,6 @@
   "cacheId": "my-cache-id",
   "defaultCacheStrategy": "networkOnly",
   "disabled": false,
-  "precache": ["listed_in_json1.txt", "listed_in_json2.txt"]
+  "precache": ["listed_in_json1.txt", "listed_in_json2.txt"],
+  "precacheHash": "DUMMY_HASH"
 }

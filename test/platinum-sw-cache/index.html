@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('Precaching', function() {
           test('precache results in Cache Storage API entries', function() {
             return navigator.serviceWorker.ready.then(function() {
-              window.fetch(swc.cacheConfigFile).then(function(response) {
+              return window.fetch(swc.cacheConfigFile).then(function(response) {
                 return response.json();
               }).then(function(config) {
                 return swc.precache.concat(config.precache);

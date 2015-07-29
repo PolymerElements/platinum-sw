@@ -45,13 +45,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * be concatenated with the values in the JSON file's `precache` property and the set of files
        * that are precached will be the union of the two.
        *
+       * There's one additional option, `precacheHash`, that can be set in the JSON. If using a
+       * build script that might output a large number of files to precache, its recommended
+       * that your build script generate a stable hash of the serialized `precache` array, and set
+       * `precacheHash` equal to that hash. That way, any changes to the list of files in `precache`
+       * will result in a new `precacheHash` value, and that will trigger the service worker
+       * update flow, which will in turn take care of precaching the new files.
+       * If your build script is Node.js based, one way to generate this hash is:
+       *
+       *     var md5 = require('crypto').createHash('md5');
+       *     md5.update(JSON.stringify(precache));
+       *     var precacheHash = md5.digest('hex');
+       *
        * An example file may look like:
        *
        *     {
        *       "cacheId": "my-cache-id",
        *       "defaultCacheStrategy": "fastest",
        *       "disabled": false,
-       *       "precache": ["file1.html", "file2.css"]
+       *       "precache": ["file1.html", "file2.css"],
+       *       "precacheHash: "HASH_OF_STRINGIFIED_VALUES_IN_PRECACHE"
        *     }
        */
       cacheConfigFile: String,
@@ -126,6 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         };
 
         if (this.cacheConfigFile) {
+          params.cacheConfigFile = this.cacheConfigFile;
           window.fetch(this.cacheConfigFile).then(function(response) {
             if (!response.ok) {
               throw Error('unable to load ' + this.cacheConfigFile);
@@ -137,7 +151,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               // Use an empty set of parameters to effectively disable caching.
               params = {};
             } else {
-              params.precache = params.precache.concat(config.precache);
+              // If there's a hash of the list of files to precache provided in the config file,
+              // then copy that over to the params that will be used to construct the service worker
+              // URL. This works around the issue where a potentially large number of precache
+              // files could result in a longer URL than a browser will allow.
+              // The actual list of files to precache (in config.precache) will be dealt by the
+              // service worker during the install phase, so we can ignore it here.
+              // See https://github.com/PolymerElements/platinum-sw/issues/53
+              if (config.precacheHash) {
+                params.precacheHash = config.precacheHash;
+              } else {
+                params.precache = params.precache.concat(config.precache);
+              }
               params.cacheId = config.cacheId || params.cacheId;
               params.defaultCacheStrategy = config.defaultCacheStrategy ||
                 params.defaultCacheStrategy;

@@ -21,10 +21,28 @@
     var strategy = global.params.get('defaultCacheStrategy');
     global.toolbox.router.default = global.toolbox[strategy] || global[strategy];
   }
-  
-  if (global.params.has('precache')) {
-    global.toolbox.precache(global.params.get('precache'));
+
+  var precachePromise;
+  // When precacheHash is present inside the cacheConfigFile JSON, its a signal that instead of
+  // reading the list of URLs to precache from the service worker's URL parameters, we need to
+  // instead fetch the JSON file and read the list of precache URLs for there. This works around
+  // the problem that the list of URLs to precache might be longer than the browser-specific limit
+  // on the size of a service worker's URL.
+  if (global.params.has('precacheHash') && global.params.has('cacheConfigFile')) {
+    precachePromise = global.fetch(global.params.get('cacheConfigFile')).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      return json.precache;
+    }).catch(function(error) {
+      return [];
+    }).then(function(precache) {
+      return precache.concat(global.params.get('precache'));
+    })
+  } else {
+    precachePromise = Promise.resolve(global.params.get('precache'));
   }
+
+  global.toolbox.precache(precachePromise);
   
   if (global.params.has('route')) {
     var setsOfRouteParams = global.params.get('route');
