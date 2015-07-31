@@ -45,17 +45,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * be concatenated with the values in the JSON file's `precache` property and the set of files
        * that are precached will be the union of the two.
        *
-       * There's one additional option, `precacheHash`, that can be set in the JSON. If using a
-       * build script that might output a large number of files to precache, its recommended
-       * that your build script generate a stable hash of the serialized `precache` array, and set
-       * `precacheHash` equal to that hash. That way, any changes to the list of files in `precache`
-       * will result in a new `precacheHash` value, and that will trigger the service worker
-       * update flow, which will in turn take care of precaching the new files.
+       * There's one additional option, `precacheFingerprint`, that can be set in the JSON. If using
+       * a build script that might output a large number of files to precache, its recommended
+       * that your build script generate a unique "fingerprint" of the files. Any changes to the
+       * `precacheFingerprint` value will result in the underlying service worker kicking off the
+       * process of caching the files listed in `precache`.
+       * While there are a few different strategies for generating an appropriate
+       * `precacheFingerprint` value, a process that makes sense is to use a stable hash of the
+       * serialized `precache` array. That way, any changes to the list of files in `precache`
+       * will result in a new `precacheFingerprint` value.
        * If your build script is Node.js based, one way to generate this hash is:
        *
        *     var md5 = require('crypto').createHash('md5');
        *     md5.update(JSON.stringify(precache));
-       *     var precacheHash = md5.digest('hex');
+       *     var precacheFingerprint = md5.digest('hex');
+       *
+       * Alternatively, you could use something like the
+       * [SHA-1 signature](http://stackoverflow.com/questions/1161869/how-to-get-sha-of-the-latest-commit-from-remote-git-repository)
+       * of your latest `git` commit for the `precacheFingerprint` value.
        *
        * An example file may look like:
        *
@@ -64,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *       "defaultCacheStrategy": "fastest",
        *       "disabled": false,
        *       "precache": ["file1.html", "file2.css"],
-       *       "precacheHash: "HASH_OF_STRINGIFIED_VALUES_IN_PRECACHE"
+       *       "precacheFingerprint": "FINGERPRINT_OF_FILES_IN_PRECACHE"
        *     }
        */
       cacheConfigFile: String,
@@ -75,7 +82,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * in which all the resources will be stored.
        *
        * If nothing is provided, the default value set in
-       * [`sw-toolbox.options.cacheName`](https://github.com/GoogleChrome/sw-toolbox/blob/8763dcc9fbc9352d58f184050e2131c42f7b6d68/lib/options.js#L28)
+       * [`toolbox.options.cacheName`](https://github.com/GoogleChrome/sw-toolbox/blob/8763dcc9fbc9352d58f184050e2131c42f7b6d68/lib/options.js#L28)
        * will be used.
        *
        * The `cacheId` is combined with the service worker's scope to construct the cache name, so
@@ -158,8 +165,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               // The actual list of files to precache (in config.precache) will be dealt by the
               // service worker during the install phase, so we can ignore it here.
               // See https://github.com/PolymerElements/platinum-sw/issues/53
-              if (config.precacheHash) {
-                params.precacheHash = config.precacheHash;
+              if (config.precacheFingerprint) {
+                params.precacheFingerprint = config.precacheFingerprint;
               } else {
                 params.precache = params.precache.concat(config.precache);
               }
