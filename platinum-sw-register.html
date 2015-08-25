@@ -144,6 +144,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
+       * Whether the page should be automatically navigate to the `https:` version of a site if it's
+       * accessed via `http:`.
+       *
+       * Service workers [require HTTPS](http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features)
+       * (unless they're accessed via a local web server, e.g. via `http://localhost:8000` or
+       * `http://127.0.0.1:8000`), and setting this option ensures that anyone visiting your site
+       * will get the benefit of your service worker.
+       *
+       * Do not use this option your website is not accessible via `https:`. Of course, if your
+       * website isn't accessible via `https:` then there's no reason to add these elements to your
+       * pages in the first place.
+       *
+       * The following logic is used to handle the redirect, which will excludes pages loaded via
+       * localhost:
+       *
+       *     if (this.redirectToHttps &&
+       *         window.location.protocol === 'http:' &&
+       *         window.location.hostname !== 'localhost' &&
+       *         // [::1] is the IPv6 localhost address.
+       *         window.location.hostname !== '[::1]' &&
+       *         // If this is an IPv4 address that doesn't start with 127., then redirect to https:
+       *         !window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)) {
+       *       window.location.protocol = 'https:';
+       *     }
+       */
+      redirectToHttps: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * Whether the page should be automatically reloaded (via `window.location.reload()`) when
        * the service worker is successfully installed.
        *
@@ -350,6 +381,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
+      if (this.redirectToHttps &&
+          window.location.protocol === 'http:' &&
+          window.location.hostname !== 'localhost' &&
+          // [::1] is the IPv6 localhost address.
+          window.location.hostname !== '[::1]' &&
+          // If this is an IPv4 address that doesn't start with 127., then redirect to https:
+          !window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)) {
+        window.location.protocol = 'https:';
+      }
+
       if (this.autoRegister) {
         this.async(this.register);
       }
