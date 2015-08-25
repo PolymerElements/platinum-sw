@@ -1,6 +1,6 @@
-self.custom204FetchHandler = function(request) {
+self.custom203FetchHandler = function(request) {
   return new Response('', {
-    status: 204,
+    status: 203,
     statusText: 'Via customFetchHandler'
   });
 };

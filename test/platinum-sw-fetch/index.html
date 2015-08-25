@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <body>
     <platinum-sw-register skip-waiting clients-claim auto-register>
-      <platinum-sw-fetch handler="custom204FetchHandler"
+      <platinum-sw-fetch handler="custom203FetchHandler"
                          path="/(.*)customFetch"></platinum-sw-fetch>
       <platinum-sw-fetch handler="custom410FetchHandler"
                          path="/(.*)customFetch"
@@ -36,7 +36,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         test('the same-origin custom fetch handler is used when the path matches', function() {
           return navigator.serviceWorker.ready.then(function() {
             return window.fetch('customFetch').then(function(response) {
-              assert.equal(response.status, 204, 'Custom response status doesn\'t match');
+              assert.equal(response.status, 203, 'Custom response status doesn\'t match');
             });
           });
         });
