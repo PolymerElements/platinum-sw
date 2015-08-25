@@ -156,13 +156,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * website isn't accessible via `https:` then there's no reason to add these elements to your
        * pages in the first place.
        *
-       * The following logic is used to handle the redirect, which will not be triggered if the site
-       * is running off of a local server on a port other than `80`:
+       * The following logic is used to handle the redirect, which will excludes pages loaded via
+       * localhost:
        *
        *     if (this.redirectToHttps &&
-       *         (!location.port || location.port === '80') &&
-       *         location.protocol === 'http:') {
-       *       location.protocol = 'https:';
+       *         window.location.protocol === 'http:' &&
+       *         window.location.hostname !== 'localhost' &&
+       *         // [::1] is the IPv6 localhost address.
+       *         window.location.hostname !== '[::1]' &&
+       *         // If this is an IPv4 address that doesn't start with 127., then redirect to https:
+       *         !window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)) {
+       *       window.location.protocol = 'https:';
        *     }
        */
       redirectToHttps: {
@@ -377,13 +381,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
-      // If redirectToHttps is set, and we're running on what appears to be a "production" web
-      // server (i.e. one that runs on port 80), then redirect to the https: version of the site if
-      // http: is currently being used.
       if (this.redirectToHttps &&
-          (!location.port || location.port === '80') &&
-          location.protocol === 'http:') {
-        location.protocol = 'https:';
+          window.location.protocol === 'http:' &&
+          window.location.hostname !== 'localhost' &&
+          // [::1] is the IPv6 localhost address.
+          window.location.hostname !== '[::1]' &&
+          // If this is an IPv4 address that doesn't start with 127., then redirect to https:
+          !window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)) {
+        window.location.protocol = 'https:';
       }
 
       if (this.autoRegister) {
