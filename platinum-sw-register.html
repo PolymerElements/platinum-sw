@@ -144,6 +144,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
+       * Whether the page should be automatically navigate to the `https:` version of a site if it's
+       * accessed via `http:`.
+       *
+       * Service workers [require HTTPS](http://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features)
+       * (unless they're accessed via a local web server, e.g. via `http://localhost:8000` or
+       * `http://127.0.0.1:8000`), and setting this option ensures that anyone visiting your site
+       * will get the benefit of your service worker.
+       *
+       * Do not use this option your website is not accessible via `https:`. Of course, if your
+       * website isn't accessible via `https:` then there's no reason to add these elements to your
+       * pages in the first place.
+       *
+       * The following logic is used to handle the redirect, which will not be triggered if the site
+       * is running off of a local server on a port other than `80`:
+       *
+       *     if (this.redirectToHttps &&
+       *         (!location.port || location.port === '80') &&
+       *         location.protocol === 'http:') {
+       *       location.protocol = 'https:';
+       *     }
+       */
+      redirectToHttps: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * Whether the page should be automatically reloaded (via `window.location.reload()`) when
        * the service worker is successfully installed.
        *
@@ -350,6 +377,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
+      // If redirectToHttps is set, and we're running on what appears to be a "production" web
+      // server (i.e. one that runs on port 80), then redirect to the https: version of the site if
+      // http: is currently being used.
+      if (this.redirectToHttps &&
+          (!location.port || location.port === '80') &&
+          location.protocol === 'http:') {
+        location.protocol = 'https:';
+      }
+
       if (this.autoRegister) {
         this.async(this.register);
       }
