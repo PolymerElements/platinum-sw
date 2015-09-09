@@ -1,7 +1,7 @@
 {
   "name": "platinum-sw",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "http://polymer.github.io/LICENSE.txt",
   "authors": [
     "The Polymer Authors"
@@ -20,9 +20,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "bower_components"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
