@@ -237,15 +237,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _constructServiceWorkerUrl: function() {
       var paramsPromises = [];
       var children = Polymer.dom(this).children;
+      var baseUri = new URL(this.baseUri, window.location.href);
+
       for (var i = 0; i < children.length; i++) {
         if (typeof children[i]._getParameters === 'function') {
-          paramsPromises.push(children[i]._getParameters(this.baseUri));
+          paramsPromises.push(children[i]._getParameters(baseUri));
         }
       }
 
       return Promise.all(paramsPromises).then(function(paramsResolutions) {
         var params = {
-          baseURI: this.baseUri,
+          baseURI: baseUri,
           version: this._version
         };
 
