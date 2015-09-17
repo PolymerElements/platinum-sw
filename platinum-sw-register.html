@@ -88,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       /**
        * The URI used as a base when constructing relative paths to service worker helper libraries
-       * that need to be loaded.
+       * that need to be loaded. If provided, it must be a complete, absolute URI.
        *
        * This can normally be kept set to the default, which will use the directory containing this
        * element as the base. However, if you [Vulcanize](https://github.com/polymer/vulcanize) your
@@ -101,9 +101,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       baseUri: {
         type: String,
         // Grab the URI of this file to use as a base when resolving relative paths.
-        // Fallback to './' as a default, though current browsers that don't support
+        // Fallback to window.location.href as a default, though current browsers that don't support
         // document.currentScript also don't support service workers.
-        value: document.currentScript ? document.currentScript.baseURI : './'
+        value: document.currentScript ? document.currentScript.baseURI : window.location.href
       },
 
       /**
