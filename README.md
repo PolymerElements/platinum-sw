@@ -34,7 +34,8 @@ the Vulcanization process. The recommended approach is to explicitly copy the di
 those helper files into the same directory as the Vulcanized output, which maintains the relative
 paths. The Polymer Starter Kit's [gulpfile.js](https://github.com/PolymerElements/polymer-starter-kit/blob/ee1b0c5ac5dd26e3ac56b12ec36d607ff02dced4/gulpfile.js#L100)
 illustrates one way of doing this. An alternative approach is to use
-`<platinum-sw-register base-uri="path/to/directory">` and hardcode a base URI to use.
+`<platinum-sw-register base-uri="https://example.com/path/to/directory">`
+and hardcode an absolute base URI to use.
 
 ## `cacheOnly` & `cacheFirst` `defaultCacheStrategy` Considered Harmful
 The [`sw-toolbox` library](https://github.com/googlechrome/sw-toolbox),
