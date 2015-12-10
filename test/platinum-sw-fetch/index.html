@@ -34,10 +34,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script>
       suite('Service Worker Fetch Handlers', function() {
         test('the same-origin custom fetch handler is used when the path matches', function() {
-          return navigator.serviceWorker.ready.then(function() {
-            return window.fetch('customFetch').then(function(response) {
-              assert.equal(response.status, 203, 'Custom response status doesn\'t match');
-            });
+          return new Promise(function(resolve) {
+            if (navigator.serviceWorker.controller) {
+              resolve();
+            } else {
+              navigator.serviceWorker.addEventListener('controllerchange', resolve);
+            }
+          }).then(function() {
+            return window.fetch('customFetch');
+          }).then(function(response) {
+            assert.equal(response.status, 203, 'Custom response status doesn\'t match');
           });
         });
 
