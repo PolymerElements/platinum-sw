@@ -101,9 +101,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       baseUri: {
         type: String,
         // Grab the URI of this file to use as a base when resolving relative paths.
+        // See https://github.com/webcomponents/webcomponentsjs/blob/88240ba9ef4cebb1579e07f7888c7b58ec017a39/src/HTMLImports/base.js#L31
+        // for background on document._currentScript. We want to support document.currentScript
+        // as well, on the off chance that the polyfills aren't loaded.
         // Fallback to './' as a default, though current browsers that don't support
         // document.currentScript also don't support service workers.
-        value: document.currentScript ? document.currentScript.baseURI : './'
+        value: document._currentScript ? document._currentScript.baseURI :
+          (document.currentScript ? document.currentScript.baseURI : './')
       },
 
       /**
