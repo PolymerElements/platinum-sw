@@ -24,7 +24,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",
-    "sw-toolbox": "^2.0.4"
+    "sw-toolbox": "^3.1.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.2",
