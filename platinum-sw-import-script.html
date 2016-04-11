@@ -51,7 +51,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.href) {
           params.importscript = this.href;
         } else {
-          console.warn('The following platinum-sw-import-script element will not have any effect.' +
+          Polymer.Base._warn('The following platinum-sw-import-script element will not have any effect.' +
             ' The "href" attribute must be set.', this);
         }
         resolve(params);

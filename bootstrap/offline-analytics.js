@@ -20,7 +20,7 @@
         // See https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters#qt
         var replayUrl = url + '&qt=' + timeDelta;
 
-        console.log('About to replay:', replayUrl);
+        Polymer.Base._log('About to replay:', replayUrl);
         global.fetch(replayUrl).then(function(response) {
           if (response.status >= 500) {
             // This will cause the promise to reject, triggering the .catch() function.

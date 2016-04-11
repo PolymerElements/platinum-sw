@@ -56,7 +56,7 @@
       if (typeof handler === 'function') {
         global.toolbox.router.get(routeParams[0], handler, originParam);
       } else {
-        console.error('Unable to register sw-toolbox route: ', routeParams);
+        Polymer.Base._error('Unable to register sw-toolbox route: ', routeParams);
       }
     }
   }

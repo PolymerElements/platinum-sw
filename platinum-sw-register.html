@@ -368,7 +368,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.fire('service-worker-error', error.toString());
         if (error.name === 'NetworkError') {
           var location = serviceWorkerUrl.origin + serviceWorkerUrl.pathname;
-          console.error('A valid service worker script was not found at ' + location + '\n' +
+          Polymer.Base._error('A valid service worker script was not found at ' + location + '\n' +
             'To learn how to fix this, please see\n' +
             'https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs');
         }
