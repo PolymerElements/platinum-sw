@@ -27,6 +27,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *                           on-service-worker-installed="handleSWInstalled">
    *       ...one or more <platinum-sw-*> children which share the service worker registration...
    *     </platinum-sw-register>
+   * Please note that service workers will only work on HTTPS. Therefore, any <platinum-sw-*> children will silently error on a HTTP connection. This error can be viewed on the event object in the `on-service-worker-error` callback. With one exception to this, `localhost` is white listed and will work on HTTP.
    *
    * Please see https://github.com/PolymerElements/platinum-sw#top-level-sw-importjs for a
    * *crucial* prerequisite file you must create before `<platinum-sw-register>` can be used!
