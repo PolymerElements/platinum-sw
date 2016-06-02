@@ -176,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 params.defaultCacheStrategy;
             }
           }.bind(this)).catch(function(error) {
-            console.info('Skipping precaching: ' + error.message);
+            Polymer.Base._info('Skipping precaching: ' + error.message);
           }).then(function() {
             resolve(params);
           });
