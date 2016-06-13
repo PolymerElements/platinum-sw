@@ -27,7 +27,7 @@ env:
     - secure: Fu4jYPPnJig93lOuds23yfVFSO4/kIW/QcuioBG2X2qweT8jtRxF5SClv7B9XwsRhObyqdyswvN72PhZuNOzLIG94djAoaLf2Q/CMGxBnXJP2kKYqgMb0ZnEyAbKQihZ8rsR/EJvabsu0cUg8/v5/8D7UqOTycHRP4Tr6qk9lwSDnV7GKY3FxBo6Co/9W7FXyfKLn+mDz5wp/WUqDJuHxfLtAQ2jrFmMMCdf1oQv5IAtA2JgAAPtpiKrxyxveIitS4HKc9v5jhYEiO0hUpl7ac2LuDFHn/H6KjoyqKpgZ6Wl5tI5q7YvsDULjdmiKPvjKiZtsJPt6lxzFbL7po6cazEDtom7cAMLd4KH8K0rt4PHO0AUOsAchlKfTeFpabSntEvEPx+KQS1PP5Kki1ZsgdLF0llimD9uVo/POtc6NbdL1jh7bDVGZgRI0tZB/hH3uGp07IdCANen0d4YNw+aO/h2dUuOHGwku3DZVcnYh6HO5HhxVYtECVmneLCtrYmm/SuACRTawjsYnIWt6tMZCF9NW4YTvreFucPdrnL4W4Yv/3T/ni+XKHQQkgwzgMNnHg3HExmD+iC/SYmPvCC1I1PhYun9V2Jgf+RGzjHepjlrG5XrRPo9b5sv2btCGznwbqTSA/jXYs95Imn09nFeWuza0D3fJEzisKMW6hU/RpI=
 node_js: stable
 addons:
-  firefox: latest
+  firefox: '46.0'
   sauce_connect: true
   apt:
     sources:
