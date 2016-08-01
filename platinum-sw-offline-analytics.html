@@ -12,7 +12,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   /**
    * The `<platinum-sw-offline-analytics>` element registers a service worker handler to
-   * intercepts requests for Google Analytics pings.
+   * intercept requests for Google Analytics pings.
    *
    * If the HTTP GET for the ping is successful (because the browser is online), then everything
    * proceeds as it normally would. If the HTTP GET fails, the ping request is saved to IndexedDB, and each time the service worker
@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    *
    * `<platinum-sw-offline-analytics>` does not take care of setting up Google Analytics on your
    * page, and assumes that you have [properly configured](https://support.google.com/analytics/answer/1008080)
-   * Google Analytics tracking code registered elsewhere on your page.
+   * the Google Analytics tracking code registered elsewhere on your page.
    *
    * Since `<platinum-sw-offline-analytics>` is only useful if the page that is being tracked with
    * Google Analytics works offline, it's best used in conjunction with the `<platinum-sw-cache>`
