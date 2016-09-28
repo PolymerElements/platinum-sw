@@ -8,6 +8,7 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="platinum-sw-registerable-behavior.html">
 
 <script>
   /**
@@ -42,6 +43,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
    */
   Polymer({
     is: 'platinum-sw-offline-analytics',
+
+    behaviors: [ Polymer.PlatinumSwRegisterableBehavior ],
 
     _getParameters: function(baseURI) {
       return Promise.resolve({
