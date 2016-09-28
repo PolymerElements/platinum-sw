@@ -234,7 +234,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         notify: true,
         readOnly: true,
         type: String
+      },
+
+      __platinumSwRegistrees: {
+        type: Array,
+        value: function() { return []; }
       }
+    },
+
+
+    listeners: {
+      'platinum-sw-register': '_onPlatinumSwRegister',
+      'platinum-sw-unregister': '_onPlatinumSwUnregister'
     },
 
     /**
@@ -259,13 +270,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _constructServiceWorkerUrl: function() {
       var paramsPromises = [];
-      var children = Polymer.dom(this).children;
       var baseUri = new URL(this.baseUri, window.location.href);
 
-      for (var i = 0; i < children.length; i++) {
-        if (typeof children[i]._getParameters === 'function') {
-          paramsPromises.push(children[i]._getParameters(baseUri));
-        }
+      for (var i = 0; i < this.__platinumSwRegistrees.length; i++) {
+        var registree = this.__platinumSwRegistrees[i];
+        paramsPromises.push(registree._getParameters(baseUri));
       }
 
       return Promise.all(paramsPromises).then(function(paramsResolutions) {
@@ -375,10 +384,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }.bind(this));
     },
 
-    attached: function() {
+    ready: function() {
+      this._onPlatinumSwRegister();
+    },
+
+    _onPlatinumSwUnregister: function(e) {
+      e.stopPropagation();
+
+      var target = this.__getEventTarget(e);
+      var index = this.__platinumSwRegistrees.indexOf(target);
+      if (index != -1) {
+        this.splice('__platinumSwRegistrees', index, 1);
+      }
+    },
+
+    _onPlatinumSwRegister: function(e) {
+      
+      if (e) {
+        e.stopPropagation();
+        var target = this.__getEventTarget(e);
+        this.push('__platinumSwRegistrees', target);
+      }
+
       if (this.autoRegister) {
         this.async(this.register);
       }
+    },
+
+    __getEventTarget: function(e) {
+      return e.composedPath ? e.composedPath()[0] : Polymer.dom(e).rootTarget;
     }
   });
 </script>
