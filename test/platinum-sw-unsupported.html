@@ -23,7 +23,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <platinum-sw-register auto-register></platinum-sw-register>
 
     <script>
-      document.addEventListener('WebComponentsReady', function() {
+      window.addEventListener('WebComponentsReady', function() {
         var sw = document.querySelector('platinum-sw-register');
         suite('Unsupported', function() {
           test('state is properly set', function() {

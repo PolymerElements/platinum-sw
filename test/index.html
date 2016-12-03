@@ -25,15 +25,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           'platinum-sw-cache/index.html?dom=shadow',
           'platinum-sw-import-script/index.html?dom=shadow',
           'platinum-sw-fetch/index.html?dom=shadow',
-          'platinum-sw-register/index.html?dom=shady',
-          'platinum-sw-cache/index.html?dom=shady',
-          'platinum-sw-import-script/index.html?dom=shady',
-          'platinum-sw-fetch/index.html?dom=shady'
+          'platinum-sw-register/index.html?wc-shadowdom=true&wc-register=true',
+          'platinum-sw-cache/index.html?wc-shadowdom=true&wc-register=true',
+          'platinum-sw-import-script/index.html?wc-shadowdom=true&wc-register=true',
+          'platinum-sw-fetch/index.html?wc-shadowdom=true&wc-register=true'
         ]);
       } else {
         WCT.loadSuites([
-          'platinum-sw-unsupported.html',
-          'platinum-sw-unsupported.html?dom=shadow'
+          'platinum-sw-unsupported.html?dom=shadow',
+          'platinum-sw-unsupported.html?wc-shadowdom=true&wc-register=true'
         ]);
       }
     </script>
