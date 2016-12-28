@@ -171,7 +171,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               } else {
                 params.precache = params.precache.concat(config.precache);
               }
-              params.cacheId = config.cacheId || params.cacheId;
+              params.cacheId = config.cacheId || params.cacheId || undefined;
               params.defaultCacheStrategy = config.defaultCacheStrategy ||
                 params.defaultCacheStrategy;
             }
