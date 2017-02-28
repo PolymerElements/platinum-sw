@@ -108,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Fallback to './' as a default, though current browsers that don't support
         // document.currentScript also don't support service workers.
         value: document._currentScript ? document._currentScript.baseURI :
-          (document.currentScript ? document.currentScript.baseURI : './')
+          (HTMLImports.importForElement ? HTMLImports.importForElement(document.currentScript).baseURI :
+          (document.currentScript ? document.currentScript.baseURI : './'))
       },
 
       /**
