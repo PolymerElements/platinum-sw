@@ -36,7 +36,7 @@
     "1.x": {
       "dependencies": {
         "polymer": "Polymer/polymer#^1.5.0",
-        "sw-toolbox": "^3.1.1"
+        "sw-toolbox": "~3.4.0"
       },
       "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#^1.0.2",
