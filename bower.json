@@ -47,9 +47,5 @@
         "fetch": "^0.9.0"
       }
     }
-  },
-  "resolutions": {
-    "polymer": "2.0-preview",
-    "webcomponentsjs": "v1"
   }
 }
