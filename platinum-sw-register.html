@@ -385,7 +385,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }.bind(this));
     },
 
-    ready: function() {
+    attached: function() {
       this._onPlatinumSwRegister();
     },
 
@@ -400,14 +400,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _onPlatinumSwRegister: function(e) {
-      
       if (e) {
         e.stopPropagation();
         var target = this.__getEventTarget(e);
         this.push('__platinumSwRegistrees', target);
       }
 
-      if (this.autoRegister) {
+      var children = Polymer.dom(this).children;
+
+      // will not register until all child webcomponents are ready.
+      // Note: requires all children to have `platinum-sw-registerable-behavior`
+      if (this.autoRegister && children.length == this.__platinumSwRegistrees.length) {
         this.async(this.register);
       }
     },
