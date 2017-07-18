@@ -235,11 +235,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         notify: true,
         readOnly: true,
         type: String
-      },
-
-      __platinumSwRegistrees: {
-        type: Array,
-        value: function() { return []; }
       }
     },
 
@@ -263,19 +258,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._constructServiceWorkerUrl().then(function(serviceWorkerUrl) {
           this._registerServiceWorker(serviceWorkerUrl);
         }.bind(this));
-      } else {
-        this._setState('unsupported');
-        this.fire('service-worker-error', 'Service workers are not available in the current browser.');
       }
     },
 
     _constructServiceWorkerUrl: function() {
       var paramsPromises = [];
+      var children = Polymer.dom(this).children;
       var baseUri = new URL(this.baseUri, window.location.href);
 
-      for (var i = 0; i < this.__platinumSwRegistrees.length; i++) {
-        var registree = this.__platinumSwRegistrees[i];
-        paramsPromises.push(registree._getParameters(baseUri));
+      for (var i = 0; i < children.length; i++) {
+        if (typeof children[i]._getParameters === 'function') {
+          paramsPromises.push(children[i]._getParameters(baseUri));
+        }
       }
 
       return Promise.all(paramsPromises).then(function(paramsResolutions) {
@@ -386,37 +380,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
-      this._onPlatinumSwRegister();
-    },
+      if (this.autoRegister) {
+        var isSupported = 'serviceWorker' in navigator;
 
-    _onPlatinumSwUnregister: function(e) {
-      e.stopPropagation();
+        if (!isSupported) {
+          this._setState('unsupported');
+          return;
+        }
 
-      var target = this.__getEventTarget(e);
-      var index = this.__platinumSwRegistrees.indexOf(target);
-      if (index != -1) {
-        this.splice('__platinumSwRegistrees', index, 1);
+        if (document.readyState !== 'complete' &&
+            document.readyState !== 'interactive') {
+
+          document.onreadystatechange = function() {
+            if (document.readyState === 'interactive') {
+              window.requestAnimationFrame(function() {
+                this.register();
+              }.bind(this));
+            }
+          }.bind(this);
+
+        } else {
+          window.requestAnimationFrame(function() {
+            this.register();
+          }.bind(this));
+        }
       }
-    },
-
-    _onPlatinumSwRegister: function(e) {
-      if (e) {
-        e.stopPropagation();
-        var target = this.__getEventTarget(e);
-        this.push('__platinumSwRegistrees', target);
-      }
-
-      var children = Polymer.dom(this).children;
-
-      // will not register until all child webcomponents are ready.
-      // Note: requires all children to have `platinum-sw-registerable-behavior`
-      if (this.autoRegister && children.length == this.__platinumSwRegistrees.length) {
-        this.async(this.register);
-      }
-    },
-
-    __getEventTarget: function(e) {
-      return e.composedPath ? e.composedPath()[0] : Polymer.dom(e).rootTarget;
     }
   });
 </script>

@@ -44,8 +44,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Polymer({
     is: 'platinum-sw-offline-analytics',
 
-    behaviors: [ Polymer.PlatinumSwRegisterableBehavior ],
-
     _getParameters: function(baseURI) {
       return Promise.resolve({
         importscript: new URL('bootstrap/simple-db.js', baseURI).href,
