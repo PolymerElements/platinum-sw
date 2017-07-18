@@ -1,3 +1,5 @@
+⚠️ This Element is now deprecated in favor of [workbox](https://github.com/GoogleChrome/workbox) and [sw-toolbox](https://github.com/GoogleChrome/sw-toolbox) ⚠️
+
 # Platinum Service Worker Elements
 A set of Polymer elements that simplify service worker registration and caching, powered by the
 [`sw-toolbox` library](https://github.com/googlechrome/sw-toolbox).
