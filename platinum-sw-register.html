@@ -374,14 +374,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
+      var isSupported = 'serviceWorker' in navigator;
+
+      if (!isSupported) {
+        this._setState('unsupported');
+        return;
+      }
+
       if (this.autoRegister) {
-        var isSupported = 'serviceWorker' in navigator;
-
-        if (!isSupported) {
-          this._setState('unsupported');
-          return;
-        }
-
         if (document.readyState !== 'complete' &&
             document.readyState !== 'interactive') {
 
