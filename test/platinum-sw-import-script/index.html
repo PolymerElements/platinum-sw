@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script>
       suite('Importing Service Worker Scripts', function() {
         test('message handler is registered via imported script', function(done) {
-          return window._controlledPromise.then(function(registration) {
+          window._controlledPromise.then(function(registration) {
             var message = 'hello';
             var messageChannel = new MessageChannel();
             messageChannel.port1.onmessage = function(event) {

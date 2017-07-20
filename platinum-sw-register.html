@@ -108,7 +108,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Fallback to './' as a default, though current browsers that don't support
         // document.currentScript also don't support service workers.
         value: document._currentScript ? document._currentScript.baseURI :
-          (document.currentScript ? document.currentScript.baseURI : './')
+          (HTMLImports.importForElement ? HTMLImports.importForElement(document.currentScript).baseURI :
+          (document.currentScript ? document.currentScript.baseURI : './'))
       },
 
       /**
@@ -251,9 +252,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._constructServiceWorkerUrl().then(function(serviceWorkerUrl) {
           this._registerServiceWorker(serviceWorkerUrl);
         }.bind(this));
-      } else {
-        this._setState('unsupported');
-        this.fire('service-worker-error', 'Service workers are not available in the current browser.');
       }
     },
 
@@ -376,8 +374,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     attached: function() {
+      var isSupported = 'serviceWorker' in navigator;
+
+      if (!isSupported) {
+        this._setState('unsupported');
+        return;
+      }
+
       if (this.autoRegister) {
-        this.async(this.register);
+        /**
+          * Register requires all elements in the light dom to be upgraded. This
+          * behavior was expected in Polymer 1 but no longer in Polymer 2.
+          * Elements that are imported synchronously should be upgraded after
+          * the document's readyState is interactive and a
+          * requestAnimationFrame.
+          */
+        if (document.readyState !== 'complete' &&
+            document.readyState !== 'interactive') {
+
+          document.onreadystatechange = function() {
+            if (document.readyState === 'interactive') {
+              window.requestAnimationFrame(this.register.bind(this));
+            }
+          }.bind(this);
+
+        } else {
+          window.requestAnimationFrame(this.register.bind(this));
+        }
       }
     }
   });
