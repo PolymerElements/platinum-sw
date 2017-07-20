@@ -382,6 +382,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       if (this.autoRegister) {
+        /**
+          * Register requires all elements in the light dom to be upgraded. This
+          * behavior was expected in Polymer 1 but no longer in Polymer 2.
+          * Elements that are imported synchronously should be upgraded after
+          * the document's readyState is interactive and a
+          * requestAnimationFrame.
+          */
         if (document.readyState !== 'complete' &&
             document.readyState !== 'interactive') {
 
