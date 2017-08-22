@@ -1,0 +1,24 @@
+{
+  "name": "@polymer/platinum-sw",
+  "flat": true,
+  "version": "3.0.0-pre.1",
+  "description": "Service worker helper elements.",
+  "contributors": [
+    "The Polymer Authors"
+  ],
+  "keywords": [
+    "caching",
+    "offline",
+    "polymer",
+    "service-worker",
+    "serviceworker",
+    "web-component",
+    "web-components"
+  ],
+  "main": "platinum-sw-elements.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "dependencies": {
+    "@polymer/polymer": "^3.0.0-pre.1"
+  },
+  "devDependencies": {}
+}
