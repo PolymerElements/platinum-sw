@@ -1,0 +1,6 @@
+{
+  "name": "@polymer/platinum-sw",
+  "private": true,
+  "description": "Service worker helper elements.",
+  "license": "http://polymer.github.io/LICENSE.txt"
+}
