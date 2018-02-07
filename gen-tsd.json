@@ -1,0 +1,9 @@
+{
+  "exclude": [
+    "index.html",
+    "test/**",
+    "demo/**",
+    "bootstrap/**",
+    "service-worker.js"
+  ]
+}
