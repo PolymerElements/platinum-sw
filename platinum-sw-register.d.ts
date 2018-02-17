@@ -34,11 +34,6 @@
 interface PlatinumSwRegisterElement extends Polymer.Element {
 
   /**
-   * kept in sync with the element's release number.
-   */
-  _version: string;
-
-  /**
    * Whether this element should automatically register the corresponding service worker as
    * soon as its added to a page.
    *
@@ -167,6 +162,11 @@ interface PlatinumSwRegisterElement extends Polymer.Element {
   readonly state: string|null|undefined;
 
   /**
+   *  kept in sync with the element's release number.
+   */
+  _version: string;
+
+  /**
    * Registers the service worker based on the configuration options in this element and any
    * child elements.
    *
@@ -175,12 +175,12 @@ interface PlatinumSwRegisterElement extends Polymer.Element {
    * It can be useful to set `autoRegister` to `false` and then explicitly call this method if
    * there are options that are only configured after the page is loaded.
    */
-  register(): any;
+  register(): void;
   _constructServiceWorkerUrl(): any;
   _unique(arr: any): any;
   _serializeUrlParams(params: any): any;
-  _registerServiceWorker(serviceWorkerUrl: any): any;
-  attached(): any;
+  _registerServiceWorker(serviceWorkerUrl: any): void;
+  attached(): void;
 }
 
 interface HTMLElementTagNameMap {
