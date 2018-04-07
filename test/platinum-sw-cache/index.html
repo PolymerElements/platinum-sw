@@ -34,18 +34,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suite('Precaching', function() {
           test('precache results in Cache Storage API entries', function() {
             return window._controlledPromise.then(function() {
-              return window.fetch(swc.cacheConfigFile).then(function(response) {
-                return response.json();
-              }).then(function(config) {
-                return swc.precache.concat(config.precache);
-              }).then(function(files) {
-                return Promise.all(files.map(function(file) {
-                  var url = new URL(file, window.location.href);
-                  return window.caches.match(url).then(function(cachedResponse) {
-                    assert.ok(cachedResponse, 'No match in Cache Storage API for ' + url);
+              return window.fetch(swc.cacheConfigFile)
+                  .then(function(response) {
+                    return response.json();
+                  })
+                  .then(function(config) {
+                    return swc.precache.concat(config.precache);
+                  })
+                  .then(function(files) {
+                    return Promise.all(files.map(function(file) {
+                      var url = new URL(file, window.location.href);
+                      return window.caches.match(url).then(function(cachedResponse) {
+                        assert.ok(
+                            cachedResponse,
+                            'No match in Cache Storage API for ' + url);
+                      });
+                    }));
                   });
-                }));
-              });
             });
           });
         });
