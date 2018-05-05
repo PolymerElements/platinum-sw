@@ -21,20 +21,58 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </head>
 
   <body>
-    <platinum-sw-register skip-waiting clients-claim auto-register></platinum-sw-register>
+    <div id="insertionPoint"></div>
 
     <script>
-      var sw = document.querySelector('platinum-sw-register');
-
       suite('Registration & Installation', function() {
+        var sw;
+        // skips tests due to async bug in mocha
+        this.ctx.skip = function() {
+          this.pending = true;
+        }.bind(this);
+        // setup must be a setup and not a suiteSetup so the async skip hack works. This boolean makes it function like a suiteSetup
+        var alreadySetup = false;
+
+        setup(function(done) {
+          // required for safari which does not support unregistering a SW
+          setTimeout(function() {
+            this.skip();
+            done();
+          }.bind(this), 3000);
+
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            var unregistrations = [];
+
+            if (alreadySetup) {
+              return Promise.resolve();
+            }
+
+            for(var registration of registrations) {
+              unregistrations.push(registration.unregister());
+            }
+
+            return Promise.all(unregistrations);
+          }).then(function() {
+            alreadySetup = true;
+            done();
+          });
+        });
+
         test('creates an active service worker', function() {
+          var insertionPoint = document.getElementById('insertionPoint');
+          insertionPoint.innerHTML = '<platinum-sw-register skip-waiting clients-claim auto-register></platinum-sw-register>';
+          sw = document.querySelector('platinum-sw-register');
+
           return window._controlledPromise.then(function(registration) {
             assert.ok(registration.active);
           });
         });
 
-        test('state is set to "installed"', function() {
-          assert.equal(sw.state, 'installed');
+        test('state is set to "installed"', function(done) {
+          setTimeout(function() {
+            assert.equal(sw.state, 'installed');
+            done();
+          }, 1000);
         });
       });
     </script>
