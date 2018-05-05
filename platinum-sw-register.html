@@ -10,6 +10,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 
 <script>
+  (function() {
+  var currentScript = document._currentScript || document.currentScript;
+  var baseUriCurrentScript;
+  // Polymer 1 and no HTML Imports
+  if (currentScript) {
+    baseUriCurrentScript = currentScript.ownerDocument.baseURI;
+  }
+
   /**
    * The `<platinum-sw-register>` element handles
    * [service
@@ -119,11 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // aren't loaded. Fallback to './' as a default, though current browsers
         // that don't support document.currentScript also don't support service
         // workers.
-        value: document._currentScript ?
-            document._currentScript.baseURI :
-            (HTMLImports.importForElement ?
-                 HTMLImports.importForElement(document.currentScript).baseURI :
-                 (document.currentScript ? document.currentScript.baseURI : './'))
+        value: baseUriCurrentScript
       },
 
       /**
@@ -245,6 +249,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * - 'unsupported'
        */
       state: {notify: true, readOnly: true, type: String}
+    },
+
+    created: function() {
+      this.baseURI = this.importPath || baseUriCurrentScript;
     },
 
     /**
@@ -428,4 +436,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     }
   });
+  })();
 </script>
