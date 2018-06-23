@@ -13,12 +13,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../../wct-browser-legacy/browser.js"></script>
     <script src="../controlled-promise.js"></script>
 
-    <link rel="import" href="../../platinum-sw-register.html">
-    <link rel="import" href="../../platinum-sw-import-script.html">
+    <script type="module" src="../../platinum-sw-register.js"></script>
+    <script type="module" src="../../platinum-sw-import-script.js"></script>
   </head>
 
   <body>
@@ -26,20 +26,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <platinum-sw-import-script href="post-message-echo.js"></platinum-sw-import-script>
     </platinum-sw-register>
 
-    <script>
-      suite('Importing Service Worker Scripts', function() {
-        test('message handler is registered via imported script', function(done) {
-          window._controlledPromise.then(function(registration) {
-            var message = 'hello';
-            var messageChannel = new MessageChannel();
-            messageChannel.port1.onmessage = function(event) {
-              assert.equal(event.data, message);
-              done();
-            };
-            registration.active.postMessage(message, [messageChannel.port2]);
-          });
-        });
-      });
-    </script>
+    <script type="module">
+import '../../platinum-sw-register.js';
+import '../../platinum-sw-import-script.js';
+suite('Importing Service Worker Scripts', function() {
+  test('message handler is registered via imported script', function(done) {
+    window._controlledPromise.then(function(registration) {
+      var message = 'hello';
+      var messageChannel = new MessageChannel();
+      messageChannel.port1.onmessage = function(event) {
+        assert.equal(event.data, message);
+        done();
+      };
+      registration.active.postMessage(message, [messageChannel.port2]);
+    });
+  });
+});
+</script>
   </body>
 </html>

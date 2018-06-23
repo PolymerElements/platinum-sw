@@ -1,0 +1,64 @@
+{
+  "files": {
+    "platinum-sw-elements.html": {
+      "convertedUrl": "platinum-sw-elements.js",
+      "exports": {}
+    },
+    "platinum-sw-cache.html": {
+      "convertedUrl": "platinum-sw-cache.js",
+      "exports": {}
+    },
+    "platinum-sw-fetch.html": {
+      "convertedUrl": "platinum-sw-fetch.js",
+      "exports": {}
+    },
+    "platinum-sw-import-script.html": {
+      "convertedUrl": "platinum-sw-import-script.js",
+      "exports": {}
+    },
+    "platinum-sw-offline-analytics.html": {
+      "convertedUrl": "platinum-sw-offline-analytics.js",
+      "exports": {}
+    },
+    "platinum-sw-register.html": {
+      "convertedUrl": "platinum-sw-register.js",
+      "exports": {}
+    },
+    "index.html": {
+      "convertedUrl": "index.html",
+      "exports": {}
+    },
+    "demo/index.html": {
+      "convertedUrl": "demo/index.html",
+      "exports": {}
+    },
+    "test/index.html": {
+      "convertedUrl": "test/index.html",
+      "exports": {}
+    },
+    "test/platinum-sw-unsupported.html": {
+      "convertedUrl": "test/platinum-sw-unsupported.html",
+      "exports": {}
+    },
+    "test/platinum-sw-cache/file.html": {
+      "convertedUrl": "test/platinum-sw-cache/file.html",
+      "exports": {}
+    },
+    "test/platinum-sw-cache/index.html": {
+      "convertedUrl": "test/platinum-sw-cache/index.html",
+      "exports": {}
+    },
+    "test/platinum-sw-fetch/index.html": {
+      "convertedUrl": "test/platinum-sw-fetch/index.html",
+      "exports": {}
+    },
+    "test/platinum-sw-import-script/index.html": {
+      "convertedUrl": "test/platinum-sw-import-script/index.html",
+      "exports": {}
+    },
+    "test/platinum-sw-register/index.html": {
+      "convertedUrl": "test/platinum-sw-register/index.html",
+      "exports": {}
+    }
+  }
+}

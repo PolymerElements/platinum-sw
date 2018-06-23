@@ -13,12 +13,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../../web-component-tester/browser.js"></script>
+    <script src="../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../../wct-browser-legacy/browser.js"></script>
     <script src="../controlled-promise.js"></script>
 
-    <link rel="import" href="../../platinum-sw-register.html">
-    <link rel="import" href="../../platinum-sw-cache.html">
+    <script type="module" src="../../platinum-sw-register.js"></script>
+    <script type="module" src="../../platinum-sw-cache.js"></script>
   </head>
 
   <body>
@@ -27,34 +27,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                          cache-config-file="cache-config.json"></platinum-sw-cache>
     </platinum-sw-register>
 
-    <script>
-      if (window.caches) {
-        var swc = document.querySelector('platinum-sw-cache');
+    <script type="module">
+import '../../platinum-sw-register.js';
+import '../../platinum-sw-cache.js';
+if (window.caches) {
+  var swc = document.querySelector('platinum-sw-cache');
 
-        suite('Precaching', function() {
-          test('precache results in Cache Storage API entries', function() {
-            return window._controlledPromise.then(function() {
-              return window.fetch(swc.cacheConfigFile)
-                  .then(function(response) {
-                    return response.json();
-                  })
-                  .then(function(config) {
-                    return swc.precache.concat(config.precache);
-                  })
-                  .then(function(files) {
-                    return Promise.all(files.map(function(file) {
-                      var url = new URL(file, window.location.href);
-                      return window.caches.match(url).then(function(cachedResponse) {
-                        assert.ok(
-                            cachedResponse,
-                            'No match in Cache Storage API for ' + url);
-                      });
-                    }));
-                  });
+  suite('Precaching', function() {
+    test('precache results in Cache Storage API entries', function() {
+      return window._controlledPromise.then(function() {
+        return window.fetch(swc.cacheConfigFile)
+            .then(function(response) {
+              return response.json();
+            })
+            .then(function(config) {
+              return swc.precache.concat(config.precache);
+            })
+            .then(function(files) {
+              return Promise.all(files.map(function(file) {
+                var url = new URL(file, window.location.href);
+                return window.caches.match(url).then(function(cachedResponse) {
+                  assert.ok(
+                      cachedResponse,
+                      'No match in Cache Storage API for ' + url);
+                });
+              }));
             });
-          });
-        });
-      }
-    </script>
+      });
+    });
+  });
+}
+</script>
   </body>
 </html>

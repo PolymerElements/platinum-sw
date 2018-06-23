@@ -13,24 +13,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+    <script src="../../../wct-browser-legacy/browser.js"></script>
 
-    <link rel="import" href="../platinum-sw-register.html">
+    <script type="module" src="../platinum-sw-register.js"></script>
   </head>
 
   <body>
     <platinum-sw-register auto-register></platinum-sw-register>
 
-    <script>
-      window.addEventListener('WebComponentsReady', function() {
-        var sw = document.querySelector('platinum-sw-register');
-        suite('Unsupported', function() {
-          test('state is properly set', function() {
-            assert.equal(sw.state, 'unsupported');
-          });
-        });
-      });
-    </script>
+    <script type="module">
+import '../platinum-sw-register.js';
+var sw = document.querySelector('platinum-sw-register');
+suite('Unsupported', function() {
+  test('state is properly set', function() {
+    assert.equal(sw.state, 'unsupported');
+  });
+});
+</script>
   </body>
 </html>
